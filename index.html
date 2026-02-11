@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>זיכרון פלוס - משחקי זיכרון לגיל השלישי</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/games.css">
+</head>
+<body>
+    <!-- Main Menu Screen -->
+    <div id="screen-menu" class="screen active">
+        <header class="app-header">
+            <h1>🧠 זיכרון פלוס</h1>
+            <p class="subtitle">משחקי זיכרון לחיים פעילים</p>
+        </header>
+        <nav class="game-grid">
+            <button class="game-card" onclick="app.startGame('card-match')">
+                <span class="game-icon">🃏</span>
+                <span class="game-name">התאמת קלפים</span>
+                <span class="game-desc">מצאו זוגות תואמים</span>
+            </button>
+            <button class="game-card" onclick="app.startGame('simon')">
+                <span class="game-icon">🎨</span>
+                <span class="game-name">סדרת צבעים</span>
+                <span class="game-desc">זכרו את הסדר</span>
+            </button>
+            <button class="game-card" onclick="app.startGame('word-quiz')">
+                <span class="game-icon">📝</span>
+                <span class="game-name">חידון מילים</span>
+                <span class="game-desc">מצאו את המילה הנכונה</span>
+            </button>
+            <button class="game-card" onclick="app.startGame('spot-diff')">
+                <span class="game-icon">🔍</span>
+                <span class="game-name">מצאו את השונה</span>
+                <span class="game-desc">איתרו את הפריט השונה</span>
+            </button>
+            <button class="game-card" onclick="app.startGame('number-memory')">
+                <span class="game-icon">🔢</span>
+                <span class="game-name">זיכרון מספרים</span>
+                <span class="game-desc">זכרו את רצף המספרים</span>
+            </button>
+            <button class="game-card" onclick="app.startGame('image-word')">
+                <span class="game-icon">🖼️</span>
+                <span class="game-name">תמונה ומילה</span>
+                <span class="game-desc">התאימו תמונות למילים</span>
+            </button>
+        </nav>
+        <div class="menu-footer">
+            <button class="btn-secondary" onclick="app.showScores()">📊 הציונים שלי</button>
+        </div>
+    </div>
+
+    <!-- Game Screen Template -->
+    <div id="screen-game" class="screen">
+        <header class="game-header">
+            <button class="btn-back" onclick="app.goHome()">→ חזרה</button>
+            <h2 id="game-title"></h2>
+            <div class="game-stats">
+                <span id="game-score">ניקוד: 0</span>
+                <span id="game-timer">⏱ 00:00</span>
+            </div>
+        </header>
+        <div id="game-instructions" class="instructions-bar"></div>
+        <main id="game-area" class="game-area"></main>
+        <div id="game-controls" class="game-controls"></div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="screen-gameover" class="screen">
+        <div class="gameover-content">
+            <h2 id="gameover-title">כל הכבוד!</h2>
+            <div class="gameover-stats">
+                <div class="stat-item">
+                    <span class="stat-label">ניקוד</span>
+                    <span id="gameover-score" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">זמן</span>
+                    <span id="gameover-time" class="stat-value">00:00</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">רמה</span>
+                    <span id="gameover-level" class="stat-value">1</span>
+                </div>
+            </div>
+            <p id="gameover-message" class="gameover-message"></p>
+            <div class="gameover-actions">
+                <button class="btn-primary btn-large" onclick="app.restartGame()">🔄 שחקו שוב</button>
+                <button class="btn-secondary btn-large" onclick="app.goHome()">🏠 תפריט ראשי</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scores Screen -->
+    <div id="screen-scores" class="screen">
+        <header class="game-header">
+            <button class="btn-back" onclick="app.goHome()">→ חזרה</button>
+            <h2>📊 הציונים שלי</h2>
+        </header>
+        <div id="scores-content" class="scores-content"></div>
+    </div>
+
+    <!-- Difficulty Selection Modal -->
+    <div id="modal-difficulty" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h3 id="difficulty-game-title">בחרו רמת קושי</h3>
+            <div class="difficulty-options">
+                <button class="btn-difficulty" onclick="app.selectDifficulty('easy')">
+                    <span class="diff-icon">😊</span>
+                    <span class="diff-name">קל</span>
+                    <span class="diff-desc">מתאים להתחלה</span>
+                </button>
+                <button class="btn-difficulty" onclick="app.selectDifficulty('medium')">
+                    <span class="diff-icon">🤔</span>
+                    <span class="diff-name">בינוני</span>
+                    <span class="diff-desc">אתגר מתון</span>
+                </button>
+                <button class="btn-difficulty" onclick="app.selectDifficulty('hard')">
+                    <span class="diff-icon">💪</span>
+                    <span class="diff-name">מאתגר</span>
+                    <span class="diff-desc">למתקדמים</span>
+                </button>
+            </div>
+            <button class="btn-secondary" onclick="app.closeDifficultyModal()">ביטול</button>
+        </div>
+    </div>
+
+    <script src="js/scoring.js"></script>
+    <script src="js/games/card-match.js"></script>
+    <script src="js/games/simon.js"></script>
+    <script src="js/games/word-quiz.js"></script>
+    <script src="js/games/spot-diff.js"></script>
+    <script src="js/games/number-memory.js"></script>
+    <script src="js/games/image-word.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

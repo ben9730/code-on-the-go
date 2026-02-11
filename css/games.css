@@ -1,0 +1,434 @@
+/* ==========================================
+   Game-Specific Styles
+   ========================================== */
+
+/* ==========================================
+   1. Card Match Game
+   ========================================== */
+.card-match-grid {
+    display: grid;
+    gap: 12px;
+    width: 100%;
+    max-width: 600px;
+    justify-content: center;
+}
+
+.card-match-grid.easy {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.card-match-grid.medium {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.card-match-grid.hard {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.memory-card {
+    aspect-ratio: 1;
+    perspective: 600px;
+    cursor: pointer;
+    min-height: 80px;
+}
+
+.memory-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease;
+    transform-style: preserve-3d;
+    border-radius: var(--radius);
+}
+
+.memory-card.flipped .memory-card-inner {
+    transform: rotateY(180deg);
+}
+
+.memory-card.matched .memory-card-inner {
+    transform: rotateY(180deg);
+    box-shadow: 0 0 12px var(--success);
+}
+
+.memory-card-front,
+.memory-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    box-shadow: var(--shadow);
+}
+
+.memory-card-front {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: var(--text-light);
+    font-size: 28px;
+}
+
+.memory-card-back {
+    background: var(--bg-card);
+    transform: rotateY(180deg);
+    border: 3px solid #E0D8CC;
+}
+
+.memory-card:hover:not(.flipped):not(.matched) .memory-card-front {
+    background: linear-gradient(135deg, var(--primary-light), var(--primary));
+}
+
+.memory-card.matched .memory-card-back {
+    border-color: var(--success);
+    background: var(--success-light);
+}
+
+/* ==========================================
+   2. Simon Says Game
+   ========================================== */
+.simon-board {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 300px;
+    max-width: 100%;
+}
+
+.simon-btn {
+    aspect-ratio: 1;
+    border: 4px solid transparent;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+    min-height: 120px;
+    font-size: 0;
+}
+
+.simon-btn:hover {
+    opacity: 0.85;
+}
+
+.simon-btn.active,
+.simon-btn.lit {
+    opacity: 1;
+    transform: scale(1.05);
+    box-shadow: 0 0 30px currentColor;
+}
+
+.simon-btn.red { background: #E53935; color: #E53935; border-color: #C62828; }
+.simon-btn.blue { background: #1E88E5; color: #1E88E5; border-color: #1565C0; }
+.simon-btn.green { background: #43A047; color: #43A047; border-color: #2E7D32; }
+.simon-btn.yellow { background: #FDD835; color: #FDD835; border-color: #F9A825; }
+
+.simon-btn.red.lit { background: #FF6659; box-shadow: 0 0 40px #E53935; }
+.simon-btn.blue.lit { background: #64B5F6; box-shadow: 0 0 40px #1E88E5; }
+.simon-btn.green.lit { background: #76D275; box-shadow: 0 0 40px #43A047; }
+.simon-btn.yellow.lit { background: #FFFF6B; box-shadow: 0 0 40px #FDD835; }
+
+.simon-level {
+    text-align: center;
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 16px;
+}
+
+.simon-message {
+    text-align: center;
+    font-size: var(--font-size-lg);
+    color: var(--text-secondary);
+    margin-top: 16px;
+    min-height: 40px;
+}
+
+/* ==========================================
+   3. Word Quiz Game
+   ========================================== */
+.word-quiz-container {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.word-clue {
+    font-size: var(--font-size-xl);
+    color: var(--primary);
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.word-question {
+    font-size: var(--font-size-lg);
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+.word-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.word-option {
+    background: var(--bg-card);
+    border: 3px solid #DDD;
+    border-radius: var(--radius);
+    padding: 18px 24px;
+    font-size: var(--font-size-lg);
+    cursor: pointer;
+    transition: all var(--transition);
+    font-family: inherit;
+    text-align: right;
+    min-height: 60px;
+}
+
+.word-option:hover,
+.word-option:focus {
+    border-color: var(--primary);
+    background: var(--bg-card-hover);
+    outline: none;
+}
+
+.word-option.correct {
+    border-color: var(--success);
+    background: var(--success-light);
+}
+
+.word-option.wrong {
+    border-color: var(--error);
+    background: var(--error-light);
+}
+
+.word-option:disabled {
+    cursor: default;
+    opacity: 0.8;
+}
+
+.word-progress {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    margin-top: 20px;
+}
+
+/* ==========================================
+   4. Spot the Difference Game
+   ========================================== */
+.spot-diff-container {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.spot-diff-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.spot-diff-grid.size-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.spot-diff-item {
+    aspect-ratio: 1;
+    background: var(--bg-card);
+    border: 3px solid #DDD;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    cursor: pointer;
+    transition: all var(--transition);
+    box-shadow: var(--shadow);
+    min-height: 80px;
+}
+
+.spot-diff-item:hover,
+.spot-diff-item:focus {
+    border-color: var(--primary);
+    transform: scale(1.05);
+    outline: none;
+}
+
+.spot-diff-item.correct {
+    border-color: var(--success);
+    background: var(--success-light);
+    animation: correctPulse 0.5s ease;
+}
+
+.spot-diff-item.wrong {
+    border-color: var(--error);
+    background: var(--error-light);
+    animation: wrongShake 0.5s ease;
+}
+
+.spot-diff-question {
+    font-size: var(--font-size-lg);
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.spot-diff-round {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    margin-top: 16px;
+}
+
+/* ==========================================
+   5. Number Memory Game
+   ========================================== */
+.number-memory-container {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.number-display {
+    font-size: 64px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 12px;
+    padding: 30px;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    direction: ltr;
+}
+
+.number-input-area {
+    margin-bottom: 20px;
+}
+
+.number-input {
+    font-size: var(--font-size-xl);
+    padding: 16px 24px;
+    border: 3px solid #DDD;
+    border-radius: var(--radius);
+    text-align: center;
+    width: 100%;
+    max-width: 300px;
+    font-family: inherit;
+    direction: ltr;
+    letter-spacing: 8px;
+    min-height: 64px;
+}
+
+.number-input:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.number-level-info {
+    font-size: var(--font-size-lg);
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+}
+
+.number-countdown {
+    font-size: var(--font-size-xxl);
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+/* ==========================================
+   6. Image-Word Pairs Game
+   ========================================== */
+.image-word-container {
+    width: 100%;
+    max-width: 550px;
+}
+
+.image-word-pairs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.iw-item {
+    background: var(--bg-card);
+    border: 3px solid #DDD;
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    cursor: pointer;
+    transition: all var(--transition);
+    box-shadow: var(--shadow);
+    min-height: 70px;
+    text-align: center;
+}
+
+.iw-item.word {
+    font-size: var(--font-size-lg);
+}
+
+.iw-item:hover:not(.matched):not(.selected),
+.iw-item:focus:not(.matched):not(.selected) {
+    border-color: var(--primary);
+    background: var(--bg-card-hover);
+    outline: none;
+}
+
+.iw-item.selected {
+    border-color: var(--secondary);
+    background: #FFF8E1;
+    box-shadow: 0 0 12px rgba(212, 163, 74, 0.3);
+}
+
+.iw-item.matched {
+    border-color: var(--success);
+    background: var(--success-light);
+    cursor: default;
+    opacity: 0.7;
+}
+
+.iw-item.wrong {
+    animation: wrongShake 0.5s ease;
+    border-color: var(--error);
+}
+
+.image-word-round {
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+}
+
+/* ==========================================
+   Shared game utilities
+   ========================================== */
+.game-message {
+    text-align: center;
+    font-size: var(--font-size-lg);
+    color: var(--text-secondary);
+    padding: 12px;
+    min-height: 48px;
+}
+
+.game-message.success {
+    color: var(--success);
+}
+
+.game-message.error {
+    color: var(--error);
+}
+
+.round-counter {
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    margin-top: 12px;
+}
