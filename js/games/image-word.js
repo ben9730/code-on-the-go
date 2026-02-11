@@ -40,6 +40,7 @@ const ImageWordGame = {
     },
 
     state: null,
+    _timeouts: [],
 
     init(difficulty) {
         const cfg = this.config[difficulty];
@@ -50,13 +51,25 @@ const ImageWordGame = {
             currentRound: 0,
             score: 0,
             correct: 0,
-            selected: null, // { type: 'image'|'word', index }
+            selected: null,
             currentPairs: [],
             matchedPairs: []
         };
+        this._timeouts = [];
 
         this.render();
         this.nextRound();
+    },
+
+    _addTimeout(fn, ms) {
+        const id = setTimeout(fn, ms);
+        this._timeouts.push(id);
+        return id;
+    },
+
+    _clearTimeouts() {
+        this._timeouts.forEach(id => clearTimeout(id));
+        this._timeouts = [];
     },
 
     render() {
@@ -69,6 +82,7 @@ const ImageWordGame = {
     },
 
     nextRound() {
+        if (!this.state) return;
         this.state.currentRound++;
         if (this.state.currentRound > this.state.totalRounds) {
             this.finish();
@@ -78,7 +92,6 @@ const ImageWordGame = {
         this.state.selected = null;
         this.state.matchedPairs = [];
 
-        // Pick random pairs for this round
         const shuffled = this.shuffleArray([...this.pairs]);
         this.state.currentPairs = shuffled.slice(0, this.state.pairsPerRound);
 
@@ -86,16 +99,16 @@ const ImageWordGame = {
     },
 
     renderRound() {
-        const { currentPairs, matchedPairs, currentRound, totalRounds, pairsPerRound } = this.state;
+        if (!this.state) return;
+        const { currentPairs, matchedPairs, currentRound, totalRounds } = this.state;
         const container = document.getElementById('iw-container');
+        if (!container) return;
 
-        // Shuffle images and words separately
         const images = this.shuffleArray(currentPairs.map((p, i) => ({ ...p, pairIndex: i, type: 'image' })));
         const words = this.shuffleArray(currentPairs.map((p, i) => ({ ...p, pairIndex: i, type: 'word' })));
 
         let html = `<div class="image-word-pairs">`;
 
-        // Left column: images
         html += '<div style="display:flex;flex-direction:column;gap:12px;">';
         images.forEach((item, i) => {
             const matched = matchedPairs.includes(item.pairIndex);
@@ -103,13 +116,13 @@ const ImageWordGame = {
                 <button class="iw-item ${matched ? 'matched' : ''}"
                     data-type="image" data-pair="${item.pairIndex}" data-idx="${i}"
                     onclick="ImageWordGame.select(this, 'image', ${item.pairIndex})"
+                    aria-label="תמונה: ${item.word}"
                     ${matched ? 'disabled' : ''}>
                     ${item.image}
                 </button>`;
         });
         html += '</div>';
 
-        // Right column: words
         html += '<div style="display:flex;flex-direction:column;gap:12px;">';
         words.forEach((item, i) => {
             const matched = matchedPairs.includes(item.pairIndex);
@@ -129,18 +142,16 @@ const ImageWordGame = {
     },
 
     select(el, type, pairIndex) {
-        if (this.state.matchedPairs.includes(pairIndex)) return;
+        if (!this.state || this.state.matchedPairs.includes(pairIndex)) return;
 
         const { selected } = this.state;
 
-        // If nothing selected, select this item
         if (!selected) {
             this.state.selected = { type, pairIndex, el };
             el.classList.add('selected');
             return;
         }
 
-        // If same type clicked, switch selection
         if (selected.type === type) {
             selected.el.classList.remove('selected');
             this.state.selected = { type, pairIndex, el };
@@ -148,9 +159,7 @@ const ImageWordGame = {
             return;
         }
 
-        // Different type - check if it's a match
         if (selected.pairIndex === pairIndex) {
-            // Match!
             this.state.matchedPairs.push(pairIndex);
             this.state.score += 10;
             this.state.correct++;
@@ -163,18 +172,16 @@ const ImageWordGame = {
             el.disabled = true;
             this.state.selected = null;
 
-            // Check if round is complete
             if (this.state.matchedPairs.length === this.state.pairsPerRound) {
-                setTimeout(() => this.nextRound(), 800);
+                this._addTimeout(() => this.nextRound(), 800);
             }
         } else {
-            // No match
             el.classList.add('wrong');
             selected.el.classList.add('wrong');
             const prevEl = selected.el;
             this.state.selected = null;
 
-            setTimeout(() => {
+            this._addTimeout(() => {
                 el.classList.remove('wrong');
                 prevEl.classList.remove('wrong', 'selected');
             }, 600);
@@ -182,6 +189,7 @@ const ImageWordGame = {
     },
 
     finish() {
+        if (!this.state) return;
         const { score, correct } = this.state;
         const total = this.state.totalRounds * this.state.pairsPerRound;
         const percentage = Math.round((correct / total) * 100);
@@ -207,6 +215,7 @@ const ImageWordGame = {
     },
 
     destroy() {
+        this._clearTimeouts();
         this.state = null;
     }
 };

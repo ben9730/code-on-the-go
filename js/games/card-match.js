@@ -16,6 +16,7 @@ const CardMatchGame = {
     },
 
     state: null,
+    _timeouts: [],
 
     init(difficulty) {
         const cfg = this.config[difficulty];
@@ -31,8 +32,20 @@ const CardMatchGame = {
             moves: 0,
             cols: cfg.cols
         };
+        this._timeouts = [];
 
         this.render();
+    },
+
+    _addTimeout(fn, ms) {
+        const id = setTimeout(fn, ms);
+        this._timeouts.push(id);
+        return id;
+    },
+
+    _clearTimeouts() {
+        this._timeouts.forEach(id => clearTimeout(id));
+        this._timeouts = [];
     },
 
     render() {
@@ -47,7 +60,7 @@ const CardMatchGame = {
             html += `
                 <div class="memory-card" data-index="${i}" onclick="CardMatchGame.flipCard(${i})" tabindex="0" role="button" aria-label="קלף ${i + 1}">
                     <div class="memory-card-inner">
-                        <div class="memory-card-front">❓</div>
+                        <div class="memory-card-front" aria-hidden="true">❓</div>
                         <div class="memory-card-back">${emoji}</div>
                     </div>
                 </div>`;
@@ -59,14 +72,14 @@ const CardMatchGame = {
     },
 
     flipCard(index) {
+        if (!this.state) return;
         const { flipped, matched, cards } = this.state;
 
-        // Ignore if already flipped or matched or two cards are shown
         if (flipped.includes(index) || matched.includes(index) || flipped.length >= 2) return;
 
         flipped.push(index);
         const cardEl = document.querySelector(`.memory-card[data-index="${index}"]`);
-        cardEl.classList.add('flipped');
+        if (cardEl) cardEl.classList.add('flipped');
 
         if (flipped.length === 2) {
             this.state.moves++;
@@ -75,18 +88,21 @@ const CardMatchGame = {
     },
 
     checkMatch() {
+        if (!this.state) return;
         const { flipped, matched, cards } = this.state;
         const [i1, i2] = flipped;
 
         if (cards[i1] === cards[i2]) {
-            // Match found
             matched.push(i1, i2);
             this.state.score += 10;
             app.updateScore(this.state.score);
 
-            setTimeout(() => {
-                document.querySelector(`.memory-card[data-index="${i1}"]`).classList.add('matched');
-                document.querySelector(`.memory-card[data-index="${i2}"]`).classList.add('matched');
+            this._addTimeout(() => {
+                if (!this.state) return;
+                const el1 = document.querySelector(`.memory-card[data-index="${i1}"]`);
+                const el2 = document.querySelector(`.memory-card[data-index="${i2}"]`);
+                if (el1) el1.classList.add('matched');
+                if (el2) el2.classList.add('matched');
                 this.state.flipped = [];
 
                 if (matched.length === this.state.cards.length) {
@@ -94,13 +110,15 @@ const CardMatchGame = {
                 }
             }, 400);
         } else {
-            // No match
             if (this.state.score > 0) this.state.score -= 1;
             app.updateScore(this.state.score);
 
-            setTimeout(() => {
-                document.querySelector(`.memory-card[data-index="${i1}"]`).classList.remove('flipped');
-                document.querySelector(`.memory-card[data-index="${i2}"]`).classList.remove('flipped');
+            this._addTimeout(() => {
+                if (!this.state) return;
+                const el1 = document.querySelector(`.memory-card[data-index="${i1}"]`);
+                const el2 = document.querySelector(`.memory-card[data-index="${i2}"]`);
+                if (el1) el1.classList.remove('flipped');
+                if (el2) el2.classList.remove('flipped');
                 this.state.flipped = [];
             }, 900);
         }
@@ -126,6 +144,7 @@ const CardMatchGame = {
     },
 
     destroy() {
+        this._clearTimeouts();
         this.state = null;
     }
 };

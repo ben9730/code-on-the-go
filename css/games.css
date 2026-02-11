@@ -111,6 +111,11 @@
     opacity: 0.85;
 }
 
+.simon-btn:focus-visible {
+    outline: 3px solid var(--text-primary);
+    outline-offset: 3px;
+}
+
 .simon-btn.active,
 .simon-btn.lit {
     opacity: 1;
@@ -408,6 +413,156 @@
 }
 
 /* ==========================================
+   7. Color Memory Game
+   ========================================== */
+.color-memory-container {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.color-level {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 16px;
+}
+
+.color-display {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    background: var(--bg-card);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-xxl);
+    color: var(--text-muted);
+    transition: all 0.4s ease;
+}
+
+.color-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.color-btn {
+    width: 64px;
+    height: 64px;
+    border: 4px solid rgba(0,0,0,0.15);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow);
+}
+
+.color-btn:hover,
+.color-btn:focus {
+    transform: scale(1.15);
+    box-shadow: var(--shadow-lg);
+    outline: none;
+}
+
+.color-btn:active {
+    transform: scale(0.95);
+}
+
+/* ==========================================
+   8. Reaction Speed Game
+   ========================================== */
+.reaction-container {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.reaction-round {
+    font-size: var(--font-size-lg);
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+}
+
+.reaction-target {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 6px solid transparent;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    font-family: inherit;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.reaction-target.waiting {
+    background: #EF5350;
+    border-color: #C62828;
+    box-shadow: 0 0 20px rgba(239, 83, 80, 0.3);
+}
+
+.reaction-target.go {
+    background: #43A047;
+    border-color: #2E7D32;
+    box-shadow: 0 0 40px rgba(67, 160, 71, 0.5);
+    animation: pulse 0.5s ease infinite alternate;
+}
+
+.reaction-target.too-early {
+    background: #FF9800;
+    border-color: #E65100;
+    box-shadow: 0 0 20px rgba(255, 152, 0, 0.3);
+}
+
+.reaction-target.result {
+    background: #1E88E5;
+    border-color: #1565C0;
+    box-shadow: 0 0 20px rgba(30, 136, 229, 0.3);
+}
+
+@keyframes pulse {
+    from { box-shadow: 0 0 20px rgba(67, 160, 71, 0.3); }
+    to { box-shadow: 0 0 50px rgba(67, 160, 71, 0.6); }
+}
+
+.reaction-text {
+    color: white;
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+}
+
+.reaction-time {
+    color: white;
+    font-size: var(--font-size-xxl);
+    font-weight: 700;
+}
+
+.reaction-stats {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+}
+
+.reaction-stats span {
+    background: var(--bg-card);
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+}
+
+/* ==========================================
    Shared game utilities
    ========================================== */
 .game-message {
@@ -431,4 +586,125 @@
     font-size: var(--font-size-sm);
     color: var(--text-muted);
     margin-top: 12px;
+}
+
+/* ==========================================
+   Mobile Game Optimizations
+   ========================================== */
+@media (max-width: 600px) {
+    .simon-board {
+        width: 260px;
+        gap: 12px;
+    }
+
+    .simon-btn {
+        min-height: 100px;
+    }
+
+    .card-match-grid {
+        gap: 8px;
+    }
+
+    .memory-card {
+        min-height: 65px;
+    }
+
+    .memory-card-front,
+    .memory-card-back {
+        font-size: 32px;
+    }
+
+    .memory-card-front {
+        font-size: 22px;
+    }
+
+    .spot-diff-item {
+        font-size: 32px;
+        min-height: 65px;
+    }
+
+    .number-display {
+        font-size: 48px;
+        letter-spacing: 8px;
+        padding: 20px;
+        min-height: 100px;
+    }
+
+    .color-display {
+        width: 130px;
+        height: 130px;
+    }
+
+    .color-btn {
+        width: 54px;
+        height: 54px;
+    }
+
+    .reaction-target {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+@media (max-width: 360px) {
+    .card-match-grid.hard {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+    }
+
+    .memory-card {
+        min-height: 55px;
+    }
+
+    .memory-card-front,
+    .memory-card-back {
+        font-size: 26px;
+    }
+
+    .simon-board {
+        width: 220px;
+        gap: 10px;
+    }
+
+    .simon-btn {
+        min-height: 85px;
+    }
+}
+
+/* Landscape for games */
+@media (max-height: 500px) and (orientation: landscape) {
+    .simon-board {
+        width: 200px;
+        gap: 8px;
+    }
+
+    .simon-btn {
+        min-height: 70px;
+    }
+
+    .card-match-grid {
+        gap: 6px;
+        max-width: 500px;
+    }
+
+    .memory-card {
+        min-height: 55px;
+    }
+
+    .number-display {
+        font-size: 42px;
+        padding: 16px;
+        min-height: 80px;
+        margin-bottom: 12px;
+    }
+
+    .color-display {
+        width: 100px;
+        height: 100px;
+    }
+
+    .reaction-target {
+        width: 160px;
+        height: 160px;
+    }
 }

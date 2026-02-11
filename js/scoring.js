@@ -32,8 +32,8 @@ const Scoring = {
         }
         try {
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify(all));
-        } catch {
-            // Storage full or unavailable
+        } catch (e) {
+            console.warn('Memory Plus: Unable to save scores', e.message);
         }
     },
 

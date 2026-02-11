@@ -2,7 +2,14 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#5B8C5A">
+    <meta name="description" content="משחקי זיכרון וחשיבה לגיל השלישי - אימון מוח יומי">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="זיכרון פלוס">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="manifest" href="manifest.json">
     <title>זיכרון פלוס - משחקי זיכרון לגיל השלישי</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/games.css">
@@ -14,40 +21,53 @@
             <h1>🧠 זיכרון פלוס</h1>
             <p class="subtitle">משחקי זיכרון לחיים פעילים</p>
         </header>
-        <nav class="game-grid">
+        <nav class="game-grid" aria-label="משחקים">
             <button class="game-card" onclick="app.startGame('card-match')">
-                <span class="game-icon">🃏</span>
+                <span class="game-icon" aria-hidden="true">🃏</span>
                 <span class="game-name">התאמת קלפים</span>
                 <span class="game-desc">מצאו זוגות תואמים</span>
             </button>
             <button class="game-card" onclick="app.startGame('simon')">
-                <span class="game-icon">🎨</span>
+                <span class="game-icon" aria-hidden="true">🎨</span>
                 <span class="game-name">סדרת צבעים</span>
                 <span class="game-desc">זכרו את הסדר</span>
             </button>
             <button class="game-card" onclick="app.startGame('word-quiz')">
-                <span class="game-icon">📝</span>
+                <span class="game-icon" aria-hidden="true">📝</span>
                 <span class="game-name">חידון מילים</span>
                 <span class="game-desc">מצאו את המילה הנכונה</span>
             </button>
             <button class="game-card" onclick="app.startGame('spot-diff')">
-                <span class="game-icon">🔍</span>
+                <span class="game-icon" aria-hidden="true">🔍</span>
                 <span class="game-name">מצאו את השונה</span>
                 <span class="game-desc">איתרו את הפריט השונה</span>
             </button>
             <button class="game-card" onclick="app.startGame('number-memory')">
-                <span class="game-icon">🔢</span>
+                <span class="game-icon" aria-hidden="true">🔢</span>
                 <span class="game-name">זיכרון מספרים</span>
                 <span class="game-desc">זכרו את רצף המספרים</span>
             </button>
             <button class="game-card" onclick="app.startGame('image-word')">
-                <span class="game-icon">🖼️</span>
+                <span class="game-icon" aria-hidden="true">🖼️</span>
                 <span class="game-name">תמונה ומילה</span>
                 <span class="game-desc">התאימו תמונות למילים</span>
+            </button>
+            <button class="game-card" onclick="app.startGame('color-memory')">
+                <span class="game-icon" aria-hidden="true">🎯</span>
+                <span class="game-name">זיכרון צבעים</span>
+                <span class="game-desc">זכרו את סדר הצבעים</span>
+            </button>
+            <button class="game-card" onclick="app.startGame('reaction-speed')">
+                <span class="game-icon" aria-hidden="true">⚡</span>
+                <span class="game-name">מהירות תגובה</span>
+                <span class="game-desc">בדקו את מהירות התגובה</span>
             </button>
         </nav>
         <div class="menu-footer">
             <button class="btn-secondary" onclick="app.showScores()">📊 הציונים שלי</button>
+            <button class="btn-install" id="install-btn" onclick="installApp()" style="display:none;">
+                📲 התקנת אפליקציה
+            </button>
         </div>
     </div>
 
@@ -62,7 +82,7 @@
             </div>
         </header>
         <div id="game-instructions" class="instructions-bar"></div>
-        <main id="game-area" class="game-area"></main>
+        <main id="game-area" class="game-area" role="main"></main>
         <div id="game-controls" class="game-controls"></div>
     </div>
 
@@ -102,22 +122,22 @@
     </div>
 
     <!-- Difficulty Selection Modal -->
-    <div id="modal-difficulty" class="modal" style="display:none;">
+    <div id="modal-difficulty" class="modal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="difficulty-game-title" aria-hidden="true">
         <div class="modal-content">
             <h3 id="difficulty-game-title">בחרו רמת קושי</h3>
             <div class="difficulty-options">
                 <button class="btn-difficulty" onclick="app.selectDifficulty('easy')">
-                    <span class="diff-icon">😊</span>
+                    <span class="diff-icon" aria-hidden="true">😊</span>
                     <span class="diff-name">קל</span>
                     <span class="diff-desc">מתאים להתחלה</span>
                 </button>
                 <button class="btn-difficulty" onclick="app.selectDifficulty('medium')">
-                    <span class="diff-icon">🤔</span>
+                    <span class="diff-icon" aria-hidden="true">🤔</span>
                     <span class="diff-name">בינוני</span>
                     <span class="diff-desc">אתגר מתון</span>
                 </button>
                 <button class="btn-difficulty" onclick="app.selectDifficulty('hard')">
-                    <span class="diff-icon">💪</span>
+                    <span class="diff-icon" aria-hidden="true">💪</span>
                     <span class="diff-name">מאתגר</span>
                     <span class="diff-desc">למתקדמים</span>
                 </button>
@@ -133,6 +153,8 @@
     <script src="js/games/spot-diff.js"></script>
     <script src="js/games/number-memory.js"></script>
     <script src="js/games/image-word.js"></script>
+    <script src="js/games/color-memory.js"></script>
+    <script src="js/games/reaction-speed.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

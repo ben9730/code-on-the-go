@@ -36,6 +36,7 @@ const WordQuizGame = {
     },
 
     state: null,
+    _timeouts: [],
 
     init(difficulty) {
         const cfg = this.config[difficulty];
@@ -48,9 +49,21 @@ const WordQuizGame = {
             score: 0,
             correct: 0
         };
+        this._timeouts = [];
 
         this.render();
         this.showQuestion();
+    },
+
+    _addTimeout(fn, ms) {
+        const id = setTimeout(fn, ms);
+        this._timeouts.push(id);
+        return id;
+    },
+
+    _clearTimeouts() {
+        this._timeouts.forEach(id => clearTimeout(id));
+        this._timeouts = [];
     },
 
     render() {
@@ -63,6 +76,7 @@ const WordQuizGame = {
     },
 
     showQuestion() {
+        if (!this.state) return;
         const { questions, currentIndex } = this.state;
         if (currentIndex >= questions.length) {
             this.finish();
@@ -72,11 +86,12 @@ const WordQuizGame = {
         const q = questions[currentIndex];
         const shuffledOptions = this.shuffleArray([...q.options]);
         const container = document.getElementById('quiz-container');
+        if (!container) return;
 
         container.innerHTML = `
-            <div class="word-clue fade-in">${q.clue}</div>
+            <div class="word-clue fade-in" aria-hidden="true">${q.clue}</div>
             <div class="word-question fade-in">${q.question}</div>
-            <div class="word-options">
+            <div class="word-options" role="group" aria-label="תשובות אפשריות">
                 ${shuffledOptions.map((opt, i) => `
                     <button class="word-option fade-in" onclick="WordQuizGame.selectAnswer('${opt}', this)" style="animation-delay: ${i * 0.1}s">
                         ${opt}
@@ -88,10 +103,10 @@ const WordQuizGame = {
     },
 
     selectAnswer(answer, btnEl) {
+        if (!this.state) return;
         const q = this.state.questions[this.state.currentIndex];
         const allBtns = document.querySelectorAll('.word-option');
 
-        // Disable all buttons
         allBtns.forEach(btn => btn.disabled = true);
 
         if (answer === q.answer) {
@@ -101,7 +116,6 @@ const WordQuizGame = {
             app.updateScore(this.state.score);
         } else {
             btnEl.classList.add('wrong');
-            // Highlight correct answer
             allBtns.forEach(btn => {
                 if (btn.textContent.trim() === q.answer) {
                     btn.classList.add('correct');
@@ -109,13 +123,15 @@ const WordQuizGame = {
             });
         }
 
-        setTimeout(() => {
+        this._addTimeout(() => {
+            if (!this.state) return;
             this.state.currentIndex++;
             this.showQuestion();
         }, 1200);
     },
 
     finish() {
+        if (!this.state) return;
         const { score, correct, questions } = this.state;
         const percentage = Math.round((correct / questions.length) * 100);
 
@@ -141,6 +157,7 @@ const WordQuizGame = {
     },
 
     destroy() {
+        this._clearTimeouts();
         this.state = null;
     }
 };

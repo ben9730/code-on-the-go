@@ -36,6 +36,7 @@ const SpotDiffGame = {
     },
 
     state: null,
+    _timeouts: [],
 
     init(difficulty) {
         const cfg = this.config[difficulty];
@@ -47,9 +48,21 @@ const SpotDiffGame = {
             score: 0,
             correct: 0
         };
+        this._timeouts = [];
 
         this.render();
         this.nextRound();
+    },
+
+    _addTimeout(fn, ms) {
+        const id = setTimeout(fn, ms);
+        this._timeouts.push(id);
+        return id;
+    },
+
+    _clearTimeouts() {
+        this._timeouts.forEach(id => clearTimeout(id));
+        this._timeouts = [];
     },
 
     render() {
@@ -62,6 +75,7 @@ const SpotDiffGame = {
     },
 
     nextRound() {
+        if (!this.state) return;
         this.state.currentRound++;
         if (this.state.currentRound > this.state.totalRounds) {
             this.finish();
@@ -73,10 +87,10 @@ const SpotDiffGame = {
         const mainEmoji = pair.group[0];
         const diffEmoji = pair.group[1];
 
-        // Place the different one at a random position
         const diffIndex = Math.floor(Math.random() * gridSize);
 
         const container = document.getElementById('spot-diff-container');
+        if (!container) return;
         const colClass = gridSize <= 6 ? '' : gridSize <= 9 ? '' : 'size-4';
         const cols = gridSize <= 6 ? 3 : gridSize <= 9 ? 3 : 4;
 
@@ -105,7 +119,8 @@ const SpotDiffGame = {
     },
 
     selectItem(el, isDiff) {
-        // Disable all items
+        if (!this.state) return;
+
         document.querySelectorAll('.spot-diff-item').forEach(item => {
             item.disabled = true;
             item.style.cursor = 'default';
@@ -118,14 +133,15 @@ const SpotDiffGame = {
             app.updateScore(this.state.score);
         } else {
             el.classList.add('wrong');
-            // Highlight the correct one
-            document.querySelector('.spot-diff-item[data-diff="true"]').classList.add('correct');
+            const correctEl = document.querySelector('.spot-diff-item[data-diff="true"]');
+            if (correctEl) correctEl.classList.add('correct');
         }
 
-        setTimeout(() => this.nextRound(), 1000);
+        this._addTimeout(() => this.nextRound(), 1000);
     },
 
     finish() {
+        if (!this.state) return;
         const { score, correct, totalRounds } = this.state;
         const percentage = Math.round((correct / totalRounds) * 100);
 
@@ -143,6 +159,7 @@ const SpotDiffGame = {
     },
 
     destroy() {
+        this._clearTimeouts();
         this.state = null;
     }
 };

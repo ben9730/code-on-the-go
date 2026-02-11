@@ -12,7 +12,9 @@ const app = {
         'word-quiz':      WordQuizGame,
         'spot-diff':      SpotDiffGame,
         'number-memory':  NumberMemoryGame,
-        'image-word':     ImageWordGame
+        'image-word':     ImageWordGame,
+        'color-memory':   ColorMemoryGame,
+        'reaction-speed': ReactionSpeedGame
     },
 
     gameNames: {
@@ -21,7 +23,9 @@ const app = {
         'word-quiz':      { name: 'חידון מילים', icon: '📝' },
         'spot-diff':      { name: 'מצאו את השונה', icon: '🔍' },
         'number-memory':  { name: 'זיכרון מספרים', icon: '🔢' },
-        'image-word':     { name: 'תמונה ומילה', icon: '🖼️' }
+        'image-word':     { name: 'תמונה ומילה', icon: '🖼️' },
+        'color-memory':   { name: 'זיכרון צבעים', icon: '🎯' },
+        'reaction-speed': { name: 'מהירות תגובה', icon: '⚡' }
     },
 
     currentGame: null,
@@ -61,6 +65,13 @@ const app = {
         const info = this.gameNames[gameId];
         title.textContent = `${info.icon} ${info.name}`;
         modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden', 'false');
+        // Focus first difficulty button for accessibility
+        setTimeout(() => {
+            const firstBtn = modal.querySelector('.btn-difficulty');
+            if (firstBtn) firstBtn.focus();
+        }, 100);
+        this.trapFocusInModal(modal);
     },
 
     selectDifficulty(difficulty) {
@@ -93,12 +104,51 @@ const app = {
     },
 
     closeDifficultyModal() {
-        document.getElementById('modal-difficulty').style.display = 'none';
+        const modal = document.getElementById('modal-difficulty');
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+        this.removeFocusTrap();
     },
 
     restartGame() {
         if (this.currentGameId) {
             this.startGame(this.currentGameId);
+        }
+    },
+
+    // ==========================================
+    // Focus Trap for Modals (Accessibility)
+    // ==========================================
+
+    _focusTrapHandler: null,
+
+    trapFocusInModal(modal) {
+        this.removeFocusTrap();
+        this._focusTrapHandler = (e) => {
+            if (e.key !== 'Tab') return;
+            const focusable = modal.querySelectorAll('button:not([disabled]), [tabindex]:not([tabindex="-1"])');
+            if (focusable.length === 0) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (e.shiftKey) {
+                if (document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                }
+            } else {
+                if (document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        };
+        document.addEventListener('keydown', this._focusTrapHandler);
+    },
+
+    removeFocusTrap() {
+        if (this._focusTrapHandler) {
+            document.removeEventListener('keydown', this._focusTrapHandler);
+            this._focusTrapHandler = null;
         }
     },
 
@@ -186,7 +236,7 @@ const app = {
                 hasScores = true;
                 html += `
                     <div class="score-card fade-in">
-                        <span class="game-icon">${info.icon}</span>
+                        <span class="game-icon" aria-hidden="true">${info.icon}</span>
                         <div class="score-info">
                             <h3>${info.name}</h3>
                             <p>שוחק ${scoreData.plays} פעמים${scoreData.bestTime ? ' | זמן שיא: ' + Scoring.formatTime(scoreData.bestTime) : ''}</p>
@@ -215,7 +265,7 @@ document.getElementById('modal-difficulty').addEventListener('click', (e) => {
     }
 });
 
-// Keyboard support for memory cards
+// Keyboard support
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         const modal = document.getElementById('modal-difficulty');
@@ -224,3 +274,31 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
+// ==========================================
+// PWA: Service Worker Registration
+// ==========================================
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
+}
+
+// PWA Install Prompt
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const installBtn = document.getElementById('install-btn');
+    if (installBtn) installBtn.style.display = 'inline-flex';
+});
+
+function installApp() {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(() => {
+        deferredPrompt = null;
+        const installBtn = document.getElementById('install-btn');
+        if (installBtn) installBtn.style.display = 'none';
+    });
+}

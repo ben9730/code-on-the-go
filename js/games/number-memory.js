@@ -13,6 +13,7 @@ const NumberMemoryGame = {
     },
 
     state: null,
+    _timeouts: [],
 
     init(difficulty) {
         const cfg = this.config[difficulty];
@@ -23,11 +24,23 @@ const NumberMemoryGame = {
             currentNumber: '',
             level: 0,
             score: 0,
-            phase: 'ready' // ready, showing, input, feedback
+            phase: 'ready'
         };
+        this._timeouts = [];
 
         this.render();
-        setTimeout(() => this.nextLevel(), 600);
+        this._addTimeout(() => this.nextLevel(), 600);
+    },
+
+    _addTimeout(fn, ms) {
+        const id = setTimeout(fn, ms);
+        this._timeouts.push(id);
+        return id;
+    },
+
+    _clearTimeouts() {
+        this._timeouts.forEach(id => clearTimeout(id));
+        this._timeouts = [];
     },
 
     render() {
@@ -40,6 +53,7 @@ const NumberMemoryGame = {
     },
 
     nextLevel() {
+        if (!this.state) return;
         this.state.level++;
         this.state.currentNumber = this.generateNumber(this.state.digits);
         this.state.phase = 'showing';
@@ -52,35 +66,42 @@ const NumberMemoryGame = {
         for (let i = 0; i < digits; i++) {
             num += Math.floor(Math.random() * 10);
         }
-        // Ensure first digit is not 0
         if (num[0] === '0') num = (Math.floor(Math.random() * 9) + 1) + num.slice(1);
         return num;
     },
 
     showNumber() {
+        if (!this.state) return;
         const container = document.getElementById('number-container');
+        if (!container) return;
+
         container.innerHTML = `
             <div class="number-level-info fade-in">רמה ${this.state.level} - ${this.state.digits} ספרות</div>
-            <div class="number-display fade-in">${this.state.currentNumber}</div>
+            <div class="number-display fade-in" aria-live="polite">${this.state.currentNumber}</div>
             <div class="game-message">זכרו את המספר!</div>
         `;
 
-        // Progress bar effect
-        setTimeout(() => {
+        this._addTimeout(() => {
+            if (!this.state) return;
             this.state.phase = 'input';
             this.showInput();
         }, this.state.showTime);
     },
 
     showInput() {
+        if (!this.state) return;
         const container = document.getElementById('number-container');
+        if (!container) return;
+
         container.innerHTML = `
             <div class="number-level-info">רמה ${this.state.level} - ${this.state.digits} ספרות</div>
             <div class="number-display fade-in">?</div>
             <div class="number-input-area">
-                <input type="number" class="number-input" id="number-input"
+                <label for="number-input" class="sr-only">הקלידו את המספר</label>
+                <input type="text" inputmode="numeric" pattern="[0-9]*" class="number-input" id="number-input"
                     placeholder="הקלידו את המספר"
                     autocomplete="off"
+                    maxlength="20"
                     onkeydown="if(event.key==='Enter') NumberMemoryGame.checkAnswer()">
             </div>
             <button class="btn-primary" onclick="NumberMemoryGame.checkAnswer()">בדקו ✓</button>
@@ -90,15 +111,19 @@ const NumberMemoryGame = {
     },
 
     checkAnswer() {
+        if (!this.state) return;
         const input = document.getElementById('number-input');
-        const answer = input.value.trim();
+        if (!input) return;
+
+        // Sanitize: only allow digits
+        const answer = input.value.replace(/[^0-9]/g, '').trim();
 
         if (!answer) return;
 
         const container = document.getElementById('number-container');
+        if (!container) return;
 
         if (answer === this.state.currentNumber) {
-            // Correct!
             this.state.score += this.state.digits * 5;
             app.updateScore(this.state.score);
 
@@ -108,14 +133,11 @@ const NumberMemoryGame = {
                 <div class="game-message success fade-in">נכון! מעולה!</div>
             `;
 
-            // Increase difficulty
             this.state.digits++;
-            // Slightly reduce show time (but not below 1 second)
             this.state.showTime = Math.max(1000, this.state.showTime - 150);
 
-            setTimeout(() => this.nextLevel(), 1200);
+            this._addTimeout(() => this.nextLevel(), 1200);
         } else {
-            // Wrong
             container.innerHTML = `
                 <div class="number-level-info">רמה ${this.state.level}</div>
                 <div class="number-display fade-in" style="color: var(--error);">${this.state.currentNumber}</div>
@@ -125,11 +147,12 @@ const NumberMemoryGame = {
                 </div>
             `;
 
-            setTimeout(() => this.finish(), 2000);
+            this._addTimeout(() => this.finish(), 2000);
         }
     },
 
     finish() {
+        if (!this.state) return;
         const { score, level, digits } = this.state;
 
         let message;
@@ -146,6 +169,7 @@ const NumberMemoryGame = {
     },
 
     destroy() {
+        this._clearTimeouts();
         this.state = null;
     }
 };
