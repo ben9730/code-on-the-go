@@ -147,6 +147,7 @@ const ImageWordGame = {
         const { selected } = this.state;
 
         if (!selected) {
+            Sound.tap(); Haptic.tap();
             this.state.selected = { type, pairIndex, el };
             el.classList.add('selected');
             return;
@@ -160,6 +161,7 @@ const ImageWordGame = {
         }
 
         if (selected.pairIndex === pairIndex) {
+            Sound.correct(); Haptic.correct();
             this.state.matchedPairs.push(pairIndex);
             this.state.score += 10;
             this.state.correct++;
@@ -176,6 +178,7 @@ const ImageWordGame = {
                 this._addTimeout(() => this.nextRound(), 800);
             }
         } else {
+            Sound.wrong(); Haptic.wrong();
             el.classList.add('wrong');
             selected.el.classList.add('wrong');
             const prevEl = selected.el;

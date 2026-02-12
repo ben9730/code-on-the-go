@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="theme-color" content="#5B8C5A">
+    <meta name="theme-color" content="#3A7039">
     <meta name="description" content="משחקי זיכרון וחשיבה לגיל השלישי - אימון מוח יומי">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -15,12 +15,33 @@
     <link rel="stylesheet" href="css/games.css">
 </head>
 <body>
+    <!-- Update Banner -->
+    <div id="update-banner" class="update-banner" style="display:none;">
+        <span>גרסה חדשה זמינה!</span>
+        <button class="btn-update" onclick="applyUpdate()">עדכנו עכשיו</button>
+    </div>
+
+    <!-- Break Reminder -->
+    <div id="break-reminder" class="break-reminder" style="display:none;">
+        <div class="break-content">
+            <span class="break-icon">☕</span>
+            <h3>הגיע הזמן להפסקה!</h3>
+            <p>שחקתם כבר 20 דקות. קחו הפסקה קצרה, שתו מים, ומתחו את הגוף.</p>
+            <button class="btn-primary" onclick="BreakReminder.dismiss()">הבנתי, תודה!</button>
+        </div>
+    </div>
+
     <!-- Main Menu Screen -->
     <div id="screen-menu" class="screen active">
         <header class="app-header">
             <h1>🧠 זיכרון פלוס</h1>
             <p class="subtitle">משחקי זיכרון לחיים פעילים</p>
+            <div id="streak-badge" class="streak-badge" style="display:none;"></div>
         </header>
+
+        <!-- Daily Challenge -->
+        <div id="daily-challenge" class="daily-challenge"></div>
+
         <nav class="game-grid" aria-label="משחקים">
             <button class="game-card" onclick="app.startGame('card-match')">
                 <span class="game-icon" aria-hidden="true">🃏</span>
@@ -65,6 +86,7 @@
         </nav>
         <div class="menu-footer">
             <button class="btn-secondary" onclick="app.showScores()">📊 הציונים שלי</button>
+            <button class="btn-secondary" onclick="app.openSettings()">⚙️ הגדרות</button>
             <button class="btn-install" id="install-btn" onclick="installApp()" style="display:none;">
                 📲 התקנת אפליקציה
             </button>
@@ -80,16 +102,27 @@
                 <span id="game-score">ניקוד: 0</span>
                 <span id="game-timer">⏱ 00:00</span>
             </div>
+            <button class="btn-pause" id="btn-pause" onclick="app.togglePause()" style="display:none;">⏸ השהייה</button>
         </header>
         <div id="game-instructions" class="instructions-bar"></div>
         <main id="game-area" class="game-area" role="main"></main>
         <div id="game-controls" class="game-controls"></div>
     </div>
 
+    <!-- Pause Overlay -->
+    <div id="pause-overlay" class="pause-overlay" style="display:none;">
+        <div class="pause-content">
+            <h2>⏸ המשחק מושהה</h2>
+            <button class="btn-primary btn-large" onclick="app.togglePause()">▶ המשך משחק</button>
+            <button class="btn-secondary" onclick="app.goHome()">🏠 תפריט ראשי</button>
+        </div>
+    </div>
+
     <!-- Game Over Screen -->
     <div id="screen-gameover" class="screen">
         <div class="gameover-content">
             <h2 id="gameover-title">כל הכבוד!</h2>
+            <div id="gameover-record" class="gameover-record" style="display:none;">🏆 שיא חדש!</div>
             <div class="gameover-stats">
                 <div class="stat-item">
                     <span class="stat-label">ניקוד</span>
@@ -108,6 +141,7 @@
             <div class="gameover-actions">
                 <button class="btn-primary btn-large" onclick="app.restartGame()">🔄 שחקו שוב</button>
                 <button class="btn-secondary btn-large" onclick="app.goHome()">🏠 תפריט ראשי</button>
+                <button class="btn-secondary" id="btn-share" onclick="app.shareResult()">📤 שיתוף</button>
             </div>
         </div>
     </div>
@@ -146,6 +180,42 @@
         </div>
     </div>
 
+    <!-- Settings Modal -->
+    <div id="modal-settings" class="modal" style="display:none;" role="dialog" aria-modal="true" aria-label="הגדרות">
+        <div class="modal-content">
+            <h3>⚙️ הגדרות</h3>
+            <div class="settings-options">
+                <button class="btn-setting" id="setting-sound" onclick="app.toggleSound()">🔊 צלילים: פעיל</button>
+                <button class="btn-setting" id="setting-haptic" onclick="app.toggleHaptic()">📳 רטט: פעיל</button>
+                <button class="btn-setting" id="setting-text" onclick="app.cycleTextSize()">🔤 טקסט: רגיל</button>
+                <button class="btn-setting" id="setting-contrast" onclick="app.toggleHighContrast()">◐ ניגודיות: רגילה</button>
+            </div>
+            <button class="btn-secondary" onclick="app.closeSettings()">סגירה</button>
+        </div>
+    </div>
+
+    <!-- Onboarding Modal -->
+    <div id="modal-onboarding" class="modal" style="display:none;" role="dialog" aria-modal="true" aria-label="ברוכים הבאים">
+        <div class="modal-content">
+            <div id="onboarding-content"></div>
+        </div>
+    </div>
+
+    <!-- iOS Install Guide Modal -->
+    <div id="modal-ios-guide" class="modal" style="display:none;" role="dialog" aria-modal="true" aria-label="התקנה ב-iOS">
+        <div class="modal-content">
+            <h3>📲 התקינו כאפליקציה</h3>
+            <p class="ios-guide-text">כדי להתקין את זיכרון פלוס על מסך הבית:</p>
+            <ol class="ios-steps">
+                <li>לחצו על כפתור השיתוף <strong>⬆️</strong> בתחתית הדפדפן</li>
+                <li>גללו ובחרו <strong>"הוסף למסך הבית"</strong></li>
+                <li>לחצו <strong>"הוסף"</strong> לאישור</li>
+            </ol>
+            <button class="btn-primary" onclick="IOSGuide.dismiss()">הבנתי!</button>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
     <script src="js/scoring.js"></script>
     <script src="js/games/card-match.js"></script>
     <script src="js/games/simon.js"></script>

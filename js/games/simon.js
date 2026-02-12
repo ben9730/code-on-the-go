@@ -141,6 +141,7 @@ const SimonGame = {
         const { playerSequence, sequence } = this.state;
         const index = playerSequence.length;
 
+        Sound.tap(); Haptic.tap();
         // Light up briefly
         const btn = document.querySelector(`.simon-btn.${color}`);
         if (btn) {
@@ -159,6 +160,7 @@ const SimonGame = {
 
         if (playerSequence.length === sequence.length) {
             this.state.isPlaying = false;
+            Sound.levelUp(); Haptic.correct();
             const msg = document.getElementById('simon-msg');
             if (msg) msg.textContent = 'מצוין! ממשיכים...';
             this.state.score += 10;
@@ -170,6 +172,7 @@ const SimonGame = {
     gameOver() {
         if (!this.state) return;
         this.state.isPlaying = false;
+        Sound.wrong(); Haptic.wrong();
         const msg = document.getElementById('simon-msg');
         if (msg) msg.textContent = 'טעות! המשחק נגמר';
 

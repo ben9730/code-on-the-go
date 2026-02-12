@@ -127,11 +127,13 @@ const SpotDiffGame = {
         });
 
         if (isDiff) {
+            Sound.correct(); Haptic.correct();
             el.classList.add('correct');
             this.state.score += 10;
             this.state.correct++;
             app.updateScore(this.state.score);
         } else {
+            Sound.wrong(); Haptic.wrong();
             el.classList.add('wrong');
             const correctEl = document.querySelector('.spot-diff-item[data-diff="true"]');
             if (correctEl) correctEl.classList.add('correct');

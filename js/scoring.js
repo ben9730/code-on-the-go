@@ -1,9 +1,11 @@
 /* ==========================================
    Scoring System - LocalStorage based
+   with history tracking
    ========================================== */
 
 const Scoring = {
     STORAGE_KEY: 'memory_plus_scores',
+    HISTORY_KEY: 'memory_plus_history',
 
     getAll() {
         try {
@@ -35,6 +37,32 @@ const Scoring = {
         } catch (e) {
             console.warn('Memory Plus: Unable to save scores', e.message);
         }
+
+        // Save to history (last 50 entries)
+        this._addHistory(gameId, scoreData);
+    },
+
+    _addHistory(gameId, scoreData) {
+        try {
+            const history = JSON.parse(localStorage.getItem(this.HISTORY_KEY)) || [];
+            history.push({
+                gameId,
+                score: scoreData.score,
+                time: scoreData.time,
+                level: scoreData.level,
+                date: new Date().toISOString()
+            });
+            // Keep last 50
+            while (history.length > 50) history.shift();
+            localStorage.setItem(this.HISTORY_KEY, JSON.stringify(history));
+        } catch {}
+    },
+
+    getHistory(gameId) {
+        try {
+            const history = JSON.parse(localStorage.getItem(this.HISTORY_KEY)) || [];
+            return gameId ? history.filter(h => h.gameId === gameId) : history;
+        } catch { return []; }
     },
 
     getGame(gameId) {

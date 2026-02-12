@@ -124,6 +124,7 @@ const NumberMemoryGame = {
         if (!container) return;
 
         if (answer === this.state.currentNumber) {
+            Sound.correct(); Haptic.correct();
             this.state.score += this.state.digits * 5;
             app.updateScore(this.state.score);
 
@@ -138,6 +139,7 @@ const NumberMemoryGame = {
 
             this._addTimeout(() => this.nextLevel(), 1200);
         } else {
+            Sound.wrong(); Haptic.wrong();
             container.innerHTML = `
                 <div class="number-level-info">רמה ${this.state.level}</div>
                 <div class="number-display fade-in" style="color: var(--error);">${this.state.currentNumber}</div>

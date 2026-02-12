@@ -27,6 +27,41 @@ const WordQuizGame = {
         { clue: '🎂', question: 'מה אוכלים ביום הולדת?', answer: 'עוגה', options: ['פיצה', 'סלט', 'עוגה', 'מרק'] },
         { clue: '🌻', question: 'איזה פרח פונה לשמש?', answer: 'חמנייה', options: ['ורד', 'כלנית', 'חמנייה', 'רקפת'] },
         { clue: '🧊', question: 'מה קר מאוד?', answer: 'קרח', options: ['אש', 'קרח', 'מים', 'אבן'] },
+        { clue: '🍌', question: 'איזה פרי צהוב זה?', answer: 'בננה', options: ['בננה', 'לימון', 'אננס', 'מנגו'] },
+        { clue: '🐦', question: 'מי שר על העץ?', answer: 'ציפור', options: ['ציפור', 'חתול', 'כלב', 'דבורה'] },
+        { clue: '🌍', question: 'על מה אנחנו חיים?', answer: 'כדור הארץ', options: ['כדור הארץ', 'ירח', 'שמש', 'כוכב'] },
+        { clue: '🎈', question: 'מה עף באוויר?', answer: 'בלון', options: ['בלון', 'כדור', 'עפיפון', 'מטריה'] },
+        { clue: '🧹', question: 'במה מנקים את הרצפה?', answer: 'מטאטא', options: ['מברשת', 'מטאטא', 'מגב', 'סמרטוט'] },
+        { clue: '🎁', question: 'מה מקבלים ביום הולדת?', answer: 'מתנה', options: ['מתנה', 'מכתב', 'פרח', 'ספר'] },
+        { clue: '🧤', question: 'מה שמים על הידיים בחורף?', answer: 'כפפות', options: ['כפפות', 'גרביים', 'כובע', 'צעיף'] },
+        { clue: '🌧️', question: 'מה יורד מהשמיים?', answer: 'גשם', options: ['שלג', 'גשם', 'ברד', 'רוח'] },
+        { clue: '🎭', question: 'לאן הולכים לראות הצגה?', answer: 'תיאטרון', options: ['קולנוע', 'תיאטרון', 'מוזיאון', 'ספריה'] },
+        { clue: '🕯️', question: 'מה מדליקים בשבת?', answer: 'נרות', options: ['נרות', 'אור', 'מנורה', 'פנס'] },
+        { clue: '🍫', question: 'מה מתוק וחום?', answer: 'שוקולד', options: ['שוקולד', 'קפה', 'עוגה', 'סוכר'] },
+        { clue: '🧀', question: 'מה שמים על הלחם?', answer: 'גבינה', options: ['גבינה', 'חמאה', 'ריבה', 'שוקולד'] },
+        { clue: '🐝', question: 'מי מייצרת דבש?', answer: 'דבורה', options: ['פרפר', 'דבורה', 'זבוב', 'נמלה'] },
+        { clue: '🏊', question: 'מה עושים בבריכה?', answer: 'שוחים', options: ['רצים', 'שוחים', 'קופצים', 'רוקדים'] },
+        { clue: '🎹', question: 'איזה כלי נגינה זה?', answer: 'פסנתר', options: ['גיטרה', 'פסנתר', 'כינור', 'חליל'] },
+        { clue: '🦷', question: 'מה צריך לצחצח כל יום?', answer: 'שיניים', options: ['שיניים', 'שיער', 'ידיים', 'רגליים'] },
+        { clue: '📺', question: 'מה צופים בסלון?', answer: 'טלוויזיה', options: ['רדיו', 'טלוויזיה', 'מחשב', 'טלפון'] },
+        { clue: '🧳', question: 'מה לוקחים לטיול?', answer: 'מזוודה', options: ['תיק', 'מזוודה', 'ארנק', 'שקית'] },
+        { clue: '🍳', question: 'מה מטגנים בבוקר?', answer: 'ביצה', options: ['ביצה', 'בשר', 'ירקות', 'דג'] },
+        { clue: '🌺', question: 'מה פורח בגינה?', answer: 'פרחים', options: ['עצים', 'פרחים', 'דשא', 'שיחים'] },
+        { clue: '🦁', question: 'מי מלך החיות?', answer: 'אריה', options: ['אריה', 'נמר', 'דוב', 'זאב'] },
+        { clue: '📮', question: 'לאן שולחים מכתבים?', answer: 'דואר', options: ['דואר', 'חנות', 'בנק', 'בית'] },
+        { clue: '🧲', question: 'מה מושך מתכת?', answer: 'מגנט', options: ['מגנט', 'דבק', 'חוט', 'מסמר'] },
+        { clue: '🔔', question: 'מה משמיע צלצול?', answer: 'פעמון', options: ['שעון', 'פעמון', 'טלפון', 'חצוצרה'] },
+        { clue: '🍕', question: 'מה אוכלים משולש?', answer: 'פיצה', options: ['פיצה', 'סנדוויץ', 'טוסט', 'קרפ'] },
+        { clue: '🐢', question: 'מי הולך הכי לאט?', answer: 'צב', options: ['צב', 'חילזון', 'נמלה', 'צפרדע'] },
+        { clue: '🌽', question: 'איזה ירק צהוב זה?', answer: 'תירס', options: ['תירס', 'דלעת', 'לימון', 'בננה'] },
+        { clue: '🎓', question: 'מה חובשים בסיום לימודים?', answer: 'כובע', options: ['כובע', 'כתר', 'קסדה', 'מצנפת'] },
+        { clue: '💡', question: 'מה מאיר בחדר?', answer: 'מנורה', options: ['נר', 'מנורה', 'פנס', 'שמש'] },
+        { clue: '🍯', question: 'מה מתוק וזהוב?', answer: 'דבש', options: ['דבש', 'סוכר', 'ריבה', 'סילאן'] },
+        { clue: '🧶', question: 'ממה סורגים סוודר?', answer: 'צמר', options: ['צמר', 'כותנה', 'משי', 'עור'] },
+        { clue: '🪑', question: 'על מה יושבים?', answer: 'כיסא', options: ['כיסא', 'שולחן', 'ספסל', 'מיטה'] },
+        { clue: '🌲', question: 'מה גדל ביער?', answer: 'עצים', options: ['עצים', 'פרחים', 'דשא', 'שיחים'] },
+        { clue: '🐑', question: 'ממי מקבלים צמר?', answer: 'כבשה', options: ['כבשה', 'פרה', 'עז', 'סוס'] },
+        { clue: '🍰', question: 'מה אופים בתנור?', answer: 'עוגה', options: ['עוגה', 'סלט', 'מרק', 'סנדוויץ'] },
     ],
 
     config: {
@@ -110,11 +145,13 @@ const WordQuizGame = {
         allBtns.forEach(btn => btn.disabled = true);
 
         if (answer === q.answer) {
+            Sound.correct(); Haptic.correct();
             btnEl.classList.add('correct');
             this.state.score += 10;
             this.state.correct++;
             app.updateScore(this.state.score);
         } else {
+            Sound.wrong(); Haptic.wrong();
             btnEl.classList.add('wrong');
             allBtns.forEach(btn => {
                 if (btn.textContent.trim() === q.answer) {

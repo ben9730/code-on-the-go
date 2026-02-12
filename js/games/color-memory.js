@@ -155,6 +155,7 @@ const ColorMemoryGame = {
         const display = document.getElementById('color-display');
 
         if (color === expected) {
+            Sound.tap(); Haptic.tap();
             this.state.playerSequence.push(color);
             this.state.score += 5;
             app.updateScore(this.state.score);
@@ -166,6 +167,7 @@ const ColorMemoryGame = {
 
             if (this.state.playerSequence.length === this.state.sequence.length) {
                 this.state.phase = 'success';
+                Sound.levelUp();
                 this.state.score += 15;
                 app.updateScore(this.state.score);
                 const msg = document.getElementById('color-msg');
@@ -188,6 +190,7 @@ const ColorMemoryGame = {
                 }, 300);
             }
         } else {
+            Sound.wrong(); Haptic.wrong();
             this.state.phase = 'failed';
             if (display) {
                 display.style.background = 'var(--error)';

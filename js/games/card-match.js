@@ -78,6 +78,7 @@ const CardMatchGame = {
         if (flipped.includes(index) || matched.includes(index) || flipped.length >= 2) return;
 
         flipped.push(index);
+        Sound.tap(); Haptic.tap();
         const cardEl = document.querySelector(`.memory-card[data-index="${index}"]`);
         if (cardEl) cardEl.classList.add('flipped');
 
@@ -93,6 +94,7 @@ const CardMatchGame = {
         const [i1, i2] = flipped;
 
         if (cards[i1] === cards[i2]) {
+            Sound.correct(); Haptic.correct();
             matched.push(i1, i2);
             this.state.score += 10;
             app.updateScore(this.state.score);
@@ -110,6 +112,7 @@ const CardMatchGame = {
                 }
             }, 400);
         } else {
+            Sound.wrong(); Haptic.wrong();
             if (this.state.score > 0) this.state.score -= 1;
             app.updateScore(this.state.score);
 

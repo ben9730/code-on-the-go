@@ -104,6 +104,7 @@ const ReactionSpeedGame = {
         if (!this.state) return;
 
         if (this.state.phase === 'waiting') {
+            Sound.wrong(); Haptic.wrong();
             this.state.tooEarly = true;
             this.state.phase = 'too-early';
 
@@ -121,6 +122,7 @@ const ReactionSpeedGame = {
         }
 
         if (this.state.phase === 'ready') {
+            Sound.correct(); Haptic.correct();
             const reactionTime = Date.now() - this.state.startTime;
             this.state.reactionTimes.push(reactionTime);
             this.state.phase = 'result';

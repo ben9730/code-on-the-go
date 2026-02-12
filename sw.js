@@ -1,9 +1,10 @@
-const CACHE_NAME = 'memory-plus-v1';
+const CACHE_NAME = 'memory-plus-v3';
 const ASSETS = [
     './',
     'index.html',
     'css/style.css',
     'css/games.css',
+    'js/utils.js',
     'js/scoring.js',
     'js/app.js',
     'js/games/card-match.js',
@@ -17,12 +18,11 @@ const ASSETS = [
     'manifest.json'
 ];
 
-// Install: cache all assets
+// Install: cache all assets, wait for activation
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => cache.addAll(ASSETS))
-            .then(() => self.skipWaiting())
     );
 });
 
@@ -36,6 +36,13 @@ self.addEventListener('activate', (event) => {
             )
         ).then(() => self.clients.claim())
     );
+});
+
+// Listen for skip-waiting message from client
+self.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
 });
 
 // Fetch: cache-first strategy
