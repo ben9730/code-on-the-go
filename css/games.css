@@ -841,23 +841,32 @@
 /* ==========================================
    10. English Voice Game
    ========================================== */
+.eng-voice-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 16px auto 24px;
+}
+
 .eng-voice-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     color: white;
     border: none;
     border-radius: var(--radius-lg);
-    padding: 20px 32px;
+    padding: 18px 28px;
     font-size: var(--font-size-lg);
     cursor: pointer;
-    margin: 16px auto 24px;
     transition: all var(--transition);
     font-family: inherit;
     box-shadow: var(--shadow);
-    min-width: 220px;
+    min-width: 180px;
+    margin: 0;
 }
 
 .eng-voice-btn:hover {
@@ -869,8 +878,19 @@
     transform: scale(0.97);
 }
 
+.eng-voice-slow {
+    background: linear-gradient(135deg, #FF9800, #F57C00);
+    min-width: 150px;
+    padding: 18px 20px;
+    font-size: var(--font-size-base);
+}
+
+.eng-voice-slow:hover {
+    background: linear-gradient(135deg, #FFB74D, #FF9800);
+}
+
 .voice-icon {
-    font-size: 32px;
+    font-size: 28px;
 }
 
 .voice-text {

@@ -113,26 +113,63 @@ const EnglishVoiceGame = {
     _initVoice() {
         this._voice = null;
         if (!window.speechSynthesis) return;
-
-        const voices = speechSynthesis.getVoices();
-        this._voice = voices.find(v => v.lang.startsWith('en')) || null;
-
+        this._pickBestVoice(speechSynthesis.getVoices());
         if (!this._voice) {
             speechSynthesis.addEventListener('voiceschanged', () => {
-                const v = speechSynthesis.getVoices();
-                this._voice = v.find(voice => voice.lang.startsWith('en')) || null;
+                this._pickBestVoice(speechSynthesis.getVoices());
             }, { once: true });
         }
     },
 
-    _speak(text) {
+    _pickBestVoice(voices) {
+        if (!voices || voices.length === 0) return;
+        const enVoices = voices.filter(v => v.lang.startsWith('en'));
+        if (enVoices.length === 0) return;
+
+        // Prefer high-quality voices by name keywords (ranked)
+        const preferred = [
+            'Google US English', 'Google UK English',
+            'Samantha', 'Daniel', 'Karen', 'Moira',       // Apple
+            'Microsoft Zira', 'Microsoft David', 'Microsoft Mark',
+            'English United States', 'English United Kingdom'
+        ];
+
+        for (const name of preferred) {
+            const match = enVoices.find(v => v.name.includes(name));
+            if (match) { this._voice = match; return; }
+        }
+        // Prefer en-US, then en-GB, then any en
+        this._voice =
+            enVoices.find(v => v.lang === 'en-US') ||
+            enVoices.find(v => v.lang === 'en-GB') ||
+            enVoices[0];
+    },
+
+    _speak(text, slow) {
         if (!window.speechSynthesis) return;
         speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'en-US';
-        utterance.rate = 0.8;
-        utterance.pitch = 1;
+        utterance.rate = slow ? 0.5 : 0.7;
+        utterance.pitch = 1.0;
+        utterance.volume = 1.0;
         if (this._voice) utterance.voice = this._voice;
+
+        // Speak once, then repeat after a short pause for clarity
+        if (!slow) {
+            utterance.onend = () => {
+                this._addTimeout(() => {
+                    if (!this.state) return;
+                    const u2 = new SpeechSynthesisUtterance(text);
+                    u2.lang = 'en-US';
+                    u2.rate = 0.6;
+                    u2.pitch = 1.0;
+                    u2.volume = 1.0;
+                    if (this._voice) u2.voice = this._voice;
+                    speechSynthesis.speak(u2);
+                }, 400);
+            };
+        }
         speechSynthesis.speak(utterance);
     },
 
@@ -189,10 +226,16 @@ const EnglishVoiceGame = {
 
         container.innerHTML = `
             ${imageHtml}
-            <button class="eng-voice-btn fade-in" onclick="EnglishVoiceGame.playWord()" aria-label="השמע מילה">
-                <span class="voice-icon">🔊</span>
-                <span class="voice-text">הקשיבו למילה</span>
-            </button>
+            <div class="eng-voice-buttons">
+                <button class="eng-voice-btn fade-in" onclick="EnglishVoiceGame.playWord()" aria-label="השמע מילה">
+                    <span class="voice-icon">🔊</span>
+                    <span class="voice-text">הקשיבו למילה</span>
+                </button>
+                <button class="eng-voice-btn eng-voice-slow fade-in" onclick="EnglishVoiceGame.playWordSlow()" aria-label="השמע לאט">
+                    <span class="voice-icon">🐢</span>
+                    <span class="voice-text">לאט יותר</span>
+                </button>
+            </div>
             <div class="eng-options" role="group" aria-label="אפשרויות תשובה">
                 ${options.map((opt, i) => `
                     <button class="eng-option eng-option-dual fade-in" onclick="EnglishVoiceGame.selectAnswer('${opt.word.replace(/'/g, "\\'")}', this)" style="animation-delay: ${i * 0.1}s">
@@ -211,7 +254,14 @@ const EnglishVoiceGame = {
     playWord() {
         if (!this.state) return;
         const q = this.state.questions[this.state.currentIndex];
-        this._speak(q.word);
+        this._speak(q.word, false);
+        Haptic.tap();
+    },
+
+    playWordSlow() {
+        if (!this.state) return;
+        const q = this.state.questions[this.state.currentIndex];
+        this._speak(q.word, true);
         Haptic.tap();
     },
 
@@ -228,8 +278,8 @@ const EnglishVoiceGame = {
             this.state.score += 10;
             this.state.correct++;
             app.updateScore(this.state.score);
-            // Speak the word again on correct answer
-            this._speak(q.word);
+            // Speak the word clearly on correct answer
+            this._speak(q.word, true);
         } else {
             Sound.wrong(); Haptic.wrong();
             btnEl.classList.add('wrong');
@@ -239,8 +289,8 @@ const EnglishVoiceGame = {
                     btn.classList.add('correct');
                 }
             });
-            // Speak the correct word
-            this._addTimeout(() => this._speak(q.word), 500);
+            // Speak the correct word slowly so they learn it
+            this._addTimeout(() => this._speak(q.word, true), 500);
         }
 
         this._addTimeout(() => {
