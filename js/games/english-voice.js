@@ -25,6 +25,20 @@ const EnglishVoiceGame = {
             { image: '🔑', word: 'Key', hebrew: 'מפתח' },
             { image: '🎂', word: 'Cake', hebrew: 'עוגה' },
             { image: '🌹', word: 'Flower', hebrew: 'פרח' },
+            { image: '👶', word: 'Baby', hebrew: 'תינוק' },
+            { image: '👀', word: 'Eye', hebrew: 'עין' },
+            { image: '✋', word: 'Hand', hebrew: 'יד' },
+            { image: '🦶', word: 'Foot', hebrew: 'רגל' },
+            { image: '🍌', word: 'Banana', hebrew: 'בננה' },
+            { image: '🍊', word: 'Orange', hebrew: 'תפוז' },
+            { image: '🥛', word: 'Milk', hebrew: 'חלב' },
+            { image: '🥚', word: 'Egg', hebrew: 'ביצה' },
+            { image: '🪑', word: 'Chair', hebrew: 'כיסא' },
+            { image: '🚪', word: 'Door', hebrew: 'דלת' },
+            { image: '⭐', word: 'Star', hebrew: 'כוכב' },
+            { image: '❤️', word: 'Heart', hebrew: 'לב' },
+            { image: '🎵', word: 'Music', hebrew: 'מוזיקה' },
+            { image: '⏰', word: 'Clock', hebrew: 'שעון' },
         ],
         medium: [
             { image: '🦁', word: 'Lion', hebrew: 'אריה' },
@@ -43,6 +57,20 @@ const EnglishVoiceGame = {
             { image: '🌻', word: 'Sunflower', hebrew: 'חמנייה' },
             { image: '🍫', word: 'Chocolate', hebrew: 'שוקולד' },
             { image: '📺', word: 'Television', hebrew: 'טלוויזיה' },
+            { image: '🍇', word: 'Grapes', hebrew: 'ענבים' },
+            { image: '🍓', word: 'Strawberry', hebrew: 'תות' },
+            { image: '🥕', word: 'Carrot', hebrew: 'גזר' },
+            { image: '🌽', word: 'Corn', hebrew: 'תירס' },
+            { image: '🐴', word: 'Horse', hebrew: 'סוס' },
+            { image: '🐑', word: 'Sheep', hebrew: 'כבשה' },
+            { image: '🐸', word: 'Frog', hebrew: 'צפרדע' },
+            { image: '🐧', word: 'Penguin', hebrew: 'פינגווין' },
+            { image: '🌍', word: 'Earth', hebrew: 'כדור הארץ' },
+            { image: '🔥', word: 'Fire', hebrew: 'אש' },
+            { image: '❄️', word: 'Snow', hebrew: 'שלג' },
+            { image: '🌧️', word: 'Rain', hebrew: 'גשם' },
+            { image: '👑', word: 'Crown', hebrew: 'כתר' },
+            { image: '🎒', word: 'Backpack', hebrew: 'תיק גב' },
         ],
         hard: [
             { image: '🦅', word: 'Eagle', hebrew: 'נשר' },
@@ -61,6 +89,20 @@ const EnglishVoiceGame = {
             { image: '🦉', word: 'Owl', hebrew: 'ינשוף' },
             { image: '🔬', word: 'Microscope', hebrew: 'מיקרוסקופ' },
             { image: '🦔', word: 'Hedgehog', hebrew: 'קיפוד' },
+            { image: '🐊', word: 'Crocodile', hebrew: 'תנין' },
+            { image: '🦀', word: 'Crab', hebrew: 'סרטן' },
+            { image: '🐋', word: 'Whale', hebrew: 'לווייתן' },
+            { image: '🐺', word: 'Wolf', hebrew: 'זאב' },
+            { image: '🦌', word: 'Deer', hebrew: 'אייל' },
+            { image: '🏖️', word: 'Beach', hebrew: 'חוף' },
+            { image: '🌵', word: 'Cactus', hebrew: 'קקטוס' },
+            { image: '🍄', word: 'Mushroom', hebrew: 'פטריה' },
+            { image: '🧊', word: 'Ice', hebrew: 'קרח' },
+            { image: '⚡', word: 'Lightning', hebrew: 'ברק' },
+            { image: '🔭', word: 'Telescope', hebrew: 'טלסקופ' },
+            { image: '🧭', word: 'Compass', hebrew: 'מצפן' },
+            { image: '⚓', word: 'Anchor', hebrew: 'עוגן' },
+            { image: '🎯', word: 'Target', hebrew: 'מטרה' },
         ],
         expert: [
             { image: '🦎', word: 'Chameleon', hebrew: 'זיקית' },
@@ -75,6 +117,18 @@ const EnglishVoiceGame = {
             { image: '🪻', word: 'Lavender', hebrew: 'לבנדר' },
             { image: '🛖', word: 'Hut', hebrew: 'בקתה' },
             { image: '🪆', word: 'Matryoshka', hebrew: 'מטריושקה' },
+            { image: '🦭', word: 'Seal', hebrew: 'כלב ים' },
+            { image: '🦦', word: 'Otter', hebrew: 'לוטרה' },
+            { image: '🦡', word: 'Badger', hebrew: 'גירית' },
+            { image: '🪼', word: 'Jellyfish', hebrew: 'מדוזה' },
+            { image: '🦑', word: 'Squid', hebrew: 'דיונון' },
+            { image: '🪺', word: 'Nest', hebrew: 'קן' },
+            { image: '🏛️', word: 'Parliament', hebrew: 'פרלמנט' },
+            { image: '⛵', word: 'Sailboat', hebrew: 'מפרשית' },
+            { image: '🎪', word: 'Circus', hebrew: 'קרקס' },
+            { image: '🗿', word: 'Statue', hebrew: 'פסל' },
+            { image: '🪵', word: 'Log', hebrew: 'בול עץ' },
+            { image: '🪘', word: 'Drum', hebrew: 'תוף' },
         ]
     },
 
@@ -88,6 +142,8 @@ const EnglishVoiceGame = {
     state: null,
     _timeouts: [],
     _voice: null,
+    _currentUtterance: null,
+    _repeatUtterance: null,
 
     init(difficulty) {
         const cfg = this.config[difficulty];
@@ -119,26 +175,43 @@ const EnglishVoiceGame = {
                 this._pickBestVoice(speechSynthesis.getVoices());
             }, { once: true });
         }
+        // Warm up the speech engine to avoid first-word delay
+        this._warmUp();
+    },
+
+    _warmUp() {
+        if (!window.speechSynthesis) return;
+        const warmup = new SpeechSynthesisUtterance('');
+        warmup.volume = 0;
+        speechSynthesis.speak(warmup);
+        speechSynthesis.cancel();
     },
 
     _pickBestVoice(voices) {
         if (!voices || voices.length === 0) return;
-        const enVoices = voices.filter(v => v.lang.startsWith('en'));
+        const enVoices = voices.filter(v => v.lang && v.lang.startsWith('en'));
         if (enVoices.length === 0) return;
 
-        // Prefer high-quality voices by name keywords (ranked)
+        // Ranked by quality: Enhanced > Google network > MS Natural > Apple > MS standard > Android
         const preferred = [
-            'Google US English', 'Google UK English',
-            'Samantha', 'Daniel', 'Karen', 'Moira',       // Apple
+            'Samantha (Enhanced)', 'Daniel (Enhanced)', 'Karen (Enhanced)',
+            'Google US English', 'Google UK English Female', 'Google UK English Male',
+            'Microsoft Ana Online (Natural)', 'Microsoft Jenny Online (Natural)',
+            'Samantha', 'Daniel', 'Karen', 'Moira', 'Tessa',
             'Microsoft Zira', 'Microsoft David', 'Microsoft Mark',
             'English United States', 'English United Kingdom'
         ];
 
         for (const name of preferred) {
-            const match = enVoices.find(v => v.name.includes(name));
+            const match = enVoices.find(v => v.name.includes(name) || v.voiceURI.includes(name));
             if (match) { this._voice = match; return; }
         }
-        // Prefer en-US, then en-GB, then any en
+
+        // Among remaining, prefer network voices (higher quality) over local
+        const networkVoice = enVoices.find(v => !v.localService && v.lang === 'en-US');
+        if (networkVoice) { this._voice = networkVoice; return; }
+
+        // Fallback: prefer en-US, then en-GB, then any en
         this._voice =
             enVoices.find(v => v.lang === 'en-US') ||
             enVoices.find(v => v.lang === 'en-GB') ||
@@ -148,29 +221,34 @@ const EnglishVoiceGame = {
     _speak(text, slow) {
         if (!window.speechSynthesis) return;
         speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'en-US';
-        utterance.rate = slow ? 0.5 : 0.7;
-        utterance.pitch = 1.0;
-        utterance.volume = 1.0;
-        if (this._voice) utterance.voice = this._voice;
 
-        // Speak once, then repeat after a short pause for clarity
+        // Add trailing period for cleaner sentence-final intonation
+        const spokenText = text.endsWith('.') ? text : text + '.';
+
+        // Store reference to prevent garbage collection
+        this._currentUtterance = new SpeechSynthesisUtterance(spokenText);
+        this._currentUtterance.lang = 'en-US';
+        this._currentUtterance.rate = slow ? 0.6 : 0.8;
+        this._currentUtterance.pitch = 1.0;
+        this._currentUtterance.volume = 1.0;
+        if (this._voice) this._currentUtterance.voice = this._voice;
+
+        // Speak once, then repeat after a pause for clarity
         if (!slow) {
-            utterance.onend = () => {
+            this._currentUtterance.onend = () => {
                 this._addTimeout(() => {
                     if (!this.state) return;
-                    const u2 = new SpeechSynthesisUtterance(text);
-                    u2.lang = 'en-US';
-                    u2.rate = 0.6;
-                    u2.pitch = 1.0;
-                    u2.volume = 1.0;
-                    if (this._voice) u2.voice = this._voice;
-                    speechSynthesis.speak(u2);
-                }, 400);
+                    this._repeatUtterance = new SpeechSynthesisUtterance(spokenText);
+                    this._repeatUtterance.lang = 'en-US';
+                    this._repeatUtterance.rate = 0.65;
+                    this._repeatUtterance.pitch = 1.0;
+                    this._repeatUtterance.volume = 1.0;
+                    if (this._voice) this._repeatUtterance.voice = this._voice;
+                    speechSynthesis.speak(this._repeatUtterance);
+                }, 600);
             };
         }
-        speechSynthesis.speak(utterance);
+        speechSynthesis.speak(this._currentUtterance);
     },
 
     _addTimeout(fn, ms) {
