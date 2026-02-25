@@ -83,6 +83,16 @@
                 <span class="game-name">מהירות תגובה</span>
                 <span class="game-desc">בדקו את מהירות התגובה</span>
             </button>
+            <button class="game-card" onclick="app.startGame('english-picture')">
+                <span class="game-icon" aria-hidden="true">🇬🇧</span>
+                <span class="game-name">אנגלית בתמונות</span>
+                <span class="game-desc">למדו מילים באנגלית</span>
+            </button>
+            <button class="game-card" onclick="app.startGame('english-voice')">
+                <span class="game-icon" aria-hidden="true">🔊</span>
+                <span class="game-name">אנגלית בקול</span>
+                <span class="game-desc">הקשיבו ולמדו אנגלית</span>
+            </button>
         </nav>
         <div class="menu-footer">
             <button class="btn-secondary" onclick="app.showScores()">📊 הציונים שלי</button>
@@ -175,6 +185,11 @@
                     <span class="diff-name">מאתגר</span>
                     <span class="diff-desc">למתקדמים</span>
                 </button>
+                <button class="btn-difficulty btn-difficulty-expert" id="btn-expert" onclick="app.selectDifficulty('expert')" style="display:none;">
+                    <span class="diff-icon" aria-hidden="true">🏆</span>
+                    <span class="diff-name">מומחה</span>
+                    <span class="diff-desc">לאלופים בלבד</span>
+                </button>
             </div>
             <button class="btn-secondary" onclick="app.closeDifficultyModal()">ביטול</button>
         </div>
@@ -225,6 +240,8 @@
     <script src="js/games/image-word.js"></script>
     <script src="js/games/color-memory.js"></script>
     <script src="js/games/reaction-speed.js"></script>
+    <script src="js/games/english-picture.js"></script>
+    <script src="js/games/english-voice.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'memory-plus-v3';
+const CACHE_NAME = 'memory-plus-v4';
 const ASSETS = [
     './',
     'index.html',
@@ -15,6 +15,8 @@ const ASSETS = [
     'js/games/image-word.js',
     'js/games/color-memory.js',
     'js/games/reaction-speed.js',
+    'js/games/english-picture.js',
+    'js/games/english-voice.js',
     'manifest.json'
 ];
 

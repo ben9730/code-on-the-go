@@ -644,6 +644,20 @@
         width: 200px;
         height: 200px;
     }
+
+    .spot-diff-grid.size-5 .spot-diff-item {
+        font-size: 24px;
+        min-height: 50px;
+    }
+
+    .eng-image {
+        font-size: 60px;
+    }
+
+    .eng-voice-btn {
+        padding: 16px 24px;
+        min-width: 180px;
+    }
 }
 
 @media (max-width: 360px) {
@@ -669,6 +683,198 @@
     .simon-btn {
         min-height: 85px;
     }
+}
+
+/* ==========================================
+   Spot Diff - 5 columns for expert
+   ========================================== */
+.spot-diff-grid.size-5 {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.spot-diff-grid.size-5 .spot-diff-item {
+    font-size: 28px;
+    min-height: 60px;
+}
+
+/* ==========================================
+   Word Quiz Timer (Expert mode)
+   ========================================== */
+.quiz-timer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.quiz-timer-bar {
+    flex: 1;
+    height: 12px;
+    background: #E0E0E0;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.quiz-timer-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 6px;
+    transition: width 1s linear, background 0.3s ease;
+    width: 100%;
+}
+
+.quiz-timer-text {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    min-width: 60px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* ==========================================
+   Expert Difficulty Button
+   ========================================== */
+.btn-difficulty-expert {
+    border-color: #FFD700 !important;
+    background: linear-gradient(135deg, #FFF8E1, #FFFDE7) !important;
+}
+
+.btn-difficulty-expert:hover {
+    background: linear-gradient(135deg, #FFE082, #FFF9C4) !important;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+}
+
+/* ==========================================
+   9. English Picture Game
+   ========================================== */
+.english-game-container {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.eng-image {
+    font-size: 80px;
+    margin-bottom: 8px;
+}
+
+.eng-hebrew-hint {
+    font-size: var(--font-size-base);
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.eng-question {
+    font-size: var(--font-size-lg);
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    direction: ltr;
+    font-style: italic;
+}
+
+.eng-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.eng-option {
+    background: var(--bg-card);
+    border: 3px solid #DDD;
+    border-radius: var(--radius);
+    padding: 18px 24px;
+    font-size: var(--font-size-lg);
+    cursor: pointer;
+    transition: all var(--transition);
+    font-family: inherit;
+    text-align: center;
+    min-height: 60px;
+    direction: ltr;
+}
+
+.eng-option:hover,
+.eng-option:focus {
+    border-color: var(--primary);
+    background: var(--bg-card-hover);
+    outline: none;
+}
+
+.eng-option.correct {
+    border-color: var(--success);
+    background: var(--success-light);
+}
+
+.eng-option.wrong {
+    border-color: var(--error);
+    background: var(--error-light);
+}
+
+.eng-option:disabled {
+    cursor: default;
+    opacity: 0.8;
+}
+
+.eng-option-dual {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: right;
+}
+
+.eng-opt-word {
+    font-weight: 700;
+    font-size: var(--font-size-lg);
+    direction: ltr;
+}
+
+.eng-opt-hebrew {
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+}
+
+.eng-progress {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    margin-top: 20px;
+}
+
+/* ==========================================
+   10. English Voice Game
+   ========================================== */
+.eng-voice-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    border-radius: var(--radius-lg);
+    padding: 20px 32px;
+    font-size: var(--font-size-lg);
+    cursor: pointer;
+    margin: 16px auto 24px;
+    transition: all var(--transition);
+    font-family: inherit;
+    box-shadow: var(--shadow);
+    min-width: 220px;
+}
+
+.eng-voice-btn:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-lg);
+}
+
+.eng-voice-btn:active {
+    transform: scale(0.97);
+}
+
+.voice-icon {
+    font-size: 32px;
+}
+
+.voice-text {
+    font-weight: 600;
 }
 
 /* Landscape for games */

@@ -64,27 +64,67 @@ const WordQuizGame = {
         { clue: '🍰', question: 'מה אופים בתנור?', answer: 'עוגה', options: ['עוגה', 'סלט', 'מרק', 'סנדוויץ'] },
     ],
 
+    // Expert questions - harder, more abstract, trickier options
+    expertQuestions: [
+        { clue: '🫀', question: 'מה פועם בגוף?', answer: 'לב', options: ['לב', 'ריאה', 'כליה', 'כבד'] },
+        { clue: '🪶', question: 'מה קל כמו...?', answer: 'נוצה', options: ['נוצה', 'עלה', 'אבק', 'רוח'] },
+        { clue: '🔬', question: 'במה מגדילים דברים קטנים?', answer: 'מיקרוסקופ', options: ['טלסקופ', 'מיקרוסקופ', 'משקפת', 'זכוכית מגדלת'] },
+        { clue: '🧭', question: 'מה מראה כיוונים?', answer: 'מצפן', options: ['מצפן', 'מפה', 'שלט', 'חץ'] },
+        { clue: '⚖️', question: 'מה מסמל צדק?', answer: 'מאזניים', options: ['מאזניים', 'חרב', 'מגן', 'ספר'] },
+        { clue: '🎻', question: 'על איזה כלי מנגנים עם קשת?', answer: 'כינור', options: ['גיטרה', 'כינור', 'צ\'לו', 'חליל'] },
+        { clue: '🧬', question: 'מה נושא את המידע התורשתי?', answer: 'DNA', options: ['DNA', 'דם', 'תא', 'חלבון'] },
+        { clue: '🏛️', question: 'איפה יושבת הכנסת?', answer: 'ירושלים', options: ['תל אביב', 'ירושלים', 'חיפה', 'באר שבע'] },
+        { clue: '🫁', question: 'באיזה איבר נושמים?', answer: 'ריאות', options: ['ריאות', 'לב', 'קיבה', 'כליות'] },
+        { clue: '🪨', question: 'ממה בנויים הרים?', answer: 'סלע', options: ['סלע', 'חול', 'עפר', 'חרסית'] },
+        { clue: '🌡️', question: 'במה מודדים חום?', answer: 'מדחום', options: ['מדחום', 'ברומטר', 'שעון', 'סרגל'] },
+        { clue: '🧪', question: 'איפה עושים ניסויים?', answer: 'מעבדה', options: ['מטבח', 'מעבדה', 'כיתה', 'ספריה'] },
+        { clue: '🪐', question: 'מהו כוכב הלכת הגדול במערכת השמש?', answer: 'צדק', options: ['שבתאי', 'צדק', 'מאדים', 'נוגה'] },
+        { clue: '🦅', question: 'מי ידוע כמלך השמיים?', answer: 'נשר', options: ['עורב', 'נשר', 'ינשוף', 'בז'] },
+        { clue: '🏺', question: 'מה מצאו במערות קומראן?', answer: 'מגילות', options: ['מגילות', 'מטבעות', 'כלי חרס', 'תכשיטים'] },
+        { clue: '🎼', question: 'מי חיבר את "לירח"?', answer: 'בטהובן', options: ['מוצרט', 'בטהובן', 'באך', 'שופן'] },
+        { clue: '🌋', question: 'מה מתפרץ מהר געש?', answer: 'לבה', options: ['לבה', 'מים', 'אבנים', 'עשן'] },
+        { clue: '🧠', question: 'מהו האיבר המורכב ביותר בגוף?', answer: 'מוח', options: ['מוח', 'לב', 'עין', 'כבד'] },
+        { clue: '🏗️', question: 'מי מתכנן בניינים?', answer: 'אדריכל', options: ['מהנדס', 'אדריכל', 'קבלן', 'שרטט'] },
+        { clue: '🎨', question: 'מי צייר את המונה ליזה?', answer: 'לאונרדו דה וינצ\'י', options: ['פיקאסו', 'לאונרדו דה וינצ\'י', 'מיכלאנג\'לו', 'ואן גוך'] },
+        { clue: '🔭', question: 'במה צופים בכוכבים?', answer: 'טלסקופ', options: ['מיקרוסקופ', 'טלסקופ', 'משקפת', 'פריסקופ'] },
+        { clue: '🏜️', question: 'מהו המדבר הגדול בישראל?', answer: 'הנגב', options: ['הנגב', 'יהודה', 'ערבה', 'סיני'] },
+        { clue: '🎪', question: 'מה הביטוי "לחם ו..."?', answer: 'שעשועים', options: ['שעשועים', 'משחקים', 'מים', 'חמאה'] },
+        { clue: '🦉', question: 'איזה עוף פעיל בלילה?', answer: 'ינשוף', options: ['ינשוף', 'נשר', 'יונה', 'עורב'] },
+        { clue: '📐', question: 'כמה מעלות יש במשולש?', answer: '180', options: ['90', '180', '360', '270'] },
+    ],
+
     config: {
         easy:   { count: 6,  timePerQuestion: null },
         medium: { count: 10, timePerQuestion: null },
-        hard:   { count: 15, timePerQuestion: null }
+        hard:   { count: 15, timePerQuestion: null },
+        expert: { count: 20, timePerQuestion: 8 }
     },
 
     state: null,
     _timeouts: [],
+    _timerInterval: null,
 
     init(difficulty) {
         const cfg = this.config[difficulty];
-        const shuffled = this.shuffleArray([...this.questions]).slice(0, cfg.count);
+        let pool;
+        if (difficulty === 'expert') {
+            pool = this.shuffleArray([...this.expertQuestions, ...this.questions]);
+        } else {
+            pool = this.shuffleArray([...this.questions]);
+        }
+        const selected = pool.slice(0, cfg.count);
 
         this.state = {
             difficulty,
-            questions: shuffled,
+            questions: selected,
             currentIndex: 0,
             score: 0,
-            correct: 0
+            correct: 0,
+            timePerQuestion: cfg.timePerQuestion,
+            timeLeft: cfg.timePerQuestion
         };
         this._timeouts = [];
+        this._timerInterval = null;
 
         this.render();
         this.showQuestion();
@@ -101,16 +141,74 @@ const WordQuizGame = {
         this._timeouts = [];
     },
 
+    _startQuestionTimer() {
+        if (!this.state || !this.state.timePerQuestion) return;
+        this.state.timeLeft = this.state.timePerQuestion;
+        this._updateTimerBar();
+
+        if (this._timerInterval) clearInterval(this._timerInterval);
+        this._timerInterval = setInterval(() => {
+            if (!this.state) { this._stopQuestionTimer(); return; }
+            this.state.timeLeft--;
+            this._updateTimerBar();
+            if (this.state.timeLeft <= 0) {
+                this._stopQuestionTimer();
+                this._timeUp();
+            }
+        }, 1000);
+    },
+
+    _stopQuestionTimer() {
+        if (this._timerInterval) {
+            clearInterval(this._timerInterval);
+            this._timerInterval = null;
+        }
+    },
+
+    _updateTimerBar() {
+        const bar = document.getElementById('quiz-timer-fill');
+        const text = document.getElementById('quiz-timer-text');
+        if (!bar || !this.state) return;
+        const pct = (this.state.timeLeft / this.state.timePerQuestion) * 100;
+        bar.style.width = pct + '%';
+        bar.style.background = pct > 40 ? 'var(--primary)' : pct > 20 ? '#FFA000' : 'var(--error)';
+        if (text) text.textContent = this.state.timeLeft + ' שניות';
+    },
+
+    _timeUp() {
+        if (!this.state) return;
+        const q = this.state.questions[this.state.currentIndex];
+        const allBtns = document.querySelectorAll('.word-option');
+        allBtns.forEach(btn => {
+            btn.disabled = true;
+            if (btn.textContent.trim() === q.answer) {
+                btn.classList.add('correct');
+            }
+        });
+        Sound.wrong(); Haptic.wrong();
+
+        this._addTimeout(() => {
+            if (!this.state) return;
+            this.state.currentIndex++;
+            this.showQuestion();
+        }, 1200);
+    },
+
     render() {
         const area = document.getElementById('game-area');
         const instructions = document.getElementById('game-instructions');
-        instructions.textContent = 'בחרו את התשובה הנכונה לכל שאלה';
+        if (this.state.difficulty === 'expert') {
+            instructions.textContent = 'ענו על השאלות לפני שהזמן נגמר!';
+        } else {
+            instructions.textContent = 'בחרו את התשובה הנכונה לכל שאלה';
+        }
 
         area.innerHTML = '<div class="word-quiz-container" id="quiz-container"></div>';
         document.getElementById('game-controls').innerHTML = '';
     },
 
     showQuestion() {
+        this._stopQuestionTimer();
         if (!this.state) return;
         const { questions, currentIndex } = this.state;
         if (currentIndex >= questions.length) {
@@ -123,22 +221,39 @@ const WordQuizGame = {
         const container = document.getElementById('quiz-container');
         if (!container) return;
 
+        let timerHtml = '';
+        if (this.state.timePerQuestion) {
+            timerHtml = `
+                <div class="quiz-timer">
+                    <div class="quiz-timer-bar">
+                        <div class="quiz-timer-fill" id="quiz-timer-fill"></div>
+                    </div>
+                    <span class="quiz-timer-text" id="quiz-timer-text">${this.state.timePerQuestion} שניות</span>
+                </div>`;
+        }
+
         container.innerHTML = `
+            ${timerHtml}
             <div class="word-clue fade-in" aria-hidden="true">${q.clue}</div>
             <div class="word-question fade-in">${q.question}</div>
             <div class="word-options" role="group" aria-label="תשובות אפשריות">
                 ${shuffledOptions.map((opt, i) => `
-                    <button class="word-option fade-in" onclick="WordQuizGame.selectAnswer('${opt}', this)" style="animation-delay: ${i * 0.1}s">
+                    <button class="word-option fade-in" onclick="WordQuizGame.selectAnswer('${opt.replace(/'/g, "\\'")}', this)" style="animation-delay: ${i * 0.1}s">
                         ${opt}
                     </button>
                 `).join('')}
             </div>
             <div class="word-progress">שאלה ${currentIndex + 1} מתוך ${questions.length}</div>
         `;
+
+        if (this.state.timePerQuestion) {
+            this._startQuestionTimer();
+        }
     },
 
     selectAnswer(answer, btnEl) {
         if (!this.state) return;
+        this._stopQuestionTimer();
         const q = this.state.questions[this.state.currentIndex];
         const allBtns = document.querySelectorAll('.word-option');
 
@@ -147,7 +262,11 @@ const WordQuizGame = {
         if (answer === q.answer) {
             Sound.correct(); Haptic.correct();
             btnEl.classList.add('correct');
-            this.state.score += 10;
+            let points = 10;
+            if (this.state.timePerQuestion && this.state.timeLeft > 0) {
+                points += this.state.timeLeft; // bonus for speed
+            }
+            this.state.score += points;
             this.state.correct++;
             app.updateScore(this.state.score);
         } else {
@@ -168,6 +287,7 @@ const WordQuizGame = {
     },
 
     finish() {
+        this._stopQuestionTimer();
         if (!this.state) return;
         const { score, correct, questions } = this.state;
         const percentage = Math.round((correct / questions.length) * 100);
@@ -178,9 +298,11 @@ const WordQuizGame = {
         else if (percentage >= 50) message = 'לא רע! ניתן לשפר בתרגול';
         else message = 'נסו שוב - תרגול עושה מושלם!';
 
+        const levelMap = { easy: 1, medium: 2, hard: 3, expert: 4 };
+
         app.endGame({
             score,
-            level: this.state.difficulty === 'easy' ? 1 : this.state.difficulty === 'medium' ? 2 : 3,
+            level: levelMap[this.state.difficulty] || 1,
             message: `${correct} מתוך ${questions.length} תשובות נכונות (${percentage}%). ${message}`
         });
     },
@@ -194,6 +316,7 @@ const WordQuizGame = {
     },
 
     destroy() {
+        this._stopQuestionTimer();
         this._clearTimeouts();
         this.state = null;
     }

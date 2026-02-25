@@ -33,10 +33,27 @@ const ImageWordGame = {
         { image: '🍇', word: 'ענבים' },
     ],
 
+    // Extra pairs for expert level - less obvious
+    expertPairs: [
+        { image: '🦔', word: 'קיפוד' },
+        { image: '🦩', word: 'פלמינגו' },
+        { image: '🪺', word: 'קן' },
+        { image: '🫒', word: 'זית' },
+        { image: '🧄', word: 'שום' },
+        { image: '🪻', word: 'לבנדר' },
+        { image: '🦭', word: 'כלב ים' },
+        { image: '🪸', word: 'אלמוג' },
+        { image: '🦦', word: 'לוטרה' },
+        { image: '🫧', word: 'בועות' },
+        { image: '🪵', word: 'בול עץ' },
+        { image: '🧲', word: 'מגנט' },
+    ],
+
     config: {
         easy:   { pairsPerRound: 3, rounds: 4 },
         medium: { pairsPerRound: 4, rounds: 5 },
-        hard:   { pairsPerRound: 5, rounds: 6 }
+        hard:   { pairsPerRound: 5, rounds: 6 },
+        expert: { pairsPerRound: 6, rounds: 7 }
     },
 
     state: null,
@@ -75,7 +92,11 @@ const ImageWordGame = {
     render() {
         const area = document.getElementById('game-area');
         const instructions = document.getElementById('game-instructions');
-        instructions.textContent = 'התאימו כל תמונה למילה המתאימה לה';
+        if (this.state.difficulty === 'expert') {
+            instructions.textContent = 'התאימו כל תמונה למילה - רמת מומחה!';
+        } else {
+            instructions.textContent = 'התאימו כל תמונה למילה המתאימה לה';
+        }
 
         area.innerHTML = '<div class="image-word-container" id="iw-container"></div>';
         document.getElementById('game-controls').innerHTML = '';
@@ -92,8 +113,13 @@ const ImageWordGame = {
         this.state.selected = null;
         this.state.matchedPairs = [];
 
-        const shuffled = this.shuffleArray([...this.pairs]);
-        this.state.currentPairs = shuffled.slice(0, this.state.pairsPerRound);
+        let pool;
+        if (this.state.difficulty === 'expert') {
+            pool = this.shuffleArray([...this.pairs, ...this.expertPairs]);
+        } else {
+            pool = this.shuffleArray([...this.pairs]);
+        }
+        this.state.currentPairs = pool.slice(0, this.state.pairsPerRound);
 
         this.renderRound();
     },
@@ -202,9 +228,11 @@ const ImageWordGame = {
         else if (percentage >= 70) message = 'כל הכבוד! עבודה יפה!';
         else message = 'נסו שוב - תרגול ישפר!';
 
+        const levelMap = { easy: 1, medium: 2, hard: 3, expert: 4 };
+
         app.endGame({
             score,
-            level: this.state.difficulty === 'easy' ? 1 : this.state.difficulty === 'medium' ? 2 : 3,
+            level: levelMap[this.state.difficulty] || 1,
             message: `${correct} מתוך ${total} התאמות! ${message}`
         });
     },

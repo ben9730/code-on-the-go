@@ -7,25 +7,29 @@
 
 const app = {
     games: {
-        'card-match':     CardMatchGame,
-        'simon':          SimonGame,
-        'word-quiz':      WordQuizGame,
-        'spot-diff':      SpotDiffGame,
-        'number-memory':  NumberMemoryGame,
-        'image-word':     ImageWordGame,
-        'color-memory':   ColorMemoryGame,
-        'reaction-speed': ReactionSpeedGame
+        'card-match':       CardMatchGame,
+        'simon':            SimonGame,
+        'word-quiz':        WordQuizGame,
+        'spot-diff':        SpotDiffGame,
+        'number-memory':    NumberMemoryGame,
+        'image-word':       ImageWordGame,
+        'color-memory':     ColorMemoryGame,
+        'reaction-speed':   ReactionSpeedGame,
+        'english-picture':  EnglishPictureGame,
+        'english-voice':    EnglishVoiceGame
     },
 
     gameNames: {
-        'card-match':     { name: 'התאמת קלפים', icon: '🃏' },
-        'simon':          { name: 'סדרת צבעים', icon: '🎨' },
-        'word-quiz':      { name: 'חידון מילים', icon: '📝' },
-        'spot-diff':      { name: 'מצאו את השונה', icon: '🔍' },
-        'number-memory':  { name: 'זיכרון מספרים', icon: '🔢' },
-        'image-word':     { name: 'תמונה ומילה', icon: '🖼️' },
-        'color-memory':   { name: 'זיכרון צבעים', icon: '🎯' },
-        'reaction-speed': { name: 'מהירות תגובה', icon: '⚡' }
+        'card-match':       { name: 'התאמת קלפים', icon: '🃏' },
+        'simon':            { name: 'סדרת צבעים', icon: '🎨' },
+        'word-quiz':        { name: 'חידון מילים', icon: '📝' },
+        'spot-diff':        { name: 'מצאו את השונה', icon: '🔍' },
+        'number-memory':    { name: 'זיכרון מספרים', icon: '🔢' },
+        'image-word':       { name: 'תמונה ומילה', icon: '🖼️' },
+        'color-memory':     { name: 'זיכרון צבעים', icon: '🎯' },
+        'reaction-speed':   { name: 'מהירות תגובה', icon: '⚡' },
+        'english-picture':  { name: 'אנגלית בתמונות', icon: '🇬🇧' },
+        'english-voice':    { name: 'אנגלית בקול', icon: '🔊' }
     },
 
     currentGame: null,
@@ -91,6 +95,14 @@ const app = {
         const title = document.getElementById('difficulty-game-title');
         const info = this.gameNames[gameId];
         title.textContent = `${info.icon} ${info.name}`;
+
+        // Show/hide expert button based on game support
+        const expertBtn = document.getElementById('btn-expert');
+        if (expertBtn) {
+            const game = this.games[gameId];
+            expertBtn.style.display = (game && game.config && game.config.expert) ? '' : 'none';
+        }
+
         modal.style.display = 'flex';
         modal.setAttribute('aria-hidden', 'false');
         setTimeout(() => {

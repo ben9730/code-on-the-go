@@ -7,6 +7,7 @@ const SpotDiffGame = {
     icon: '🔍',
 
     emojiGroups: [
+        // Very similar pairs (harder to spot)
         { group: ['🍎', '🍏'], similar: true },
         { group: ['🐶', '🐕'], similar: true },
         { group: ['🌹', '🌺'], similar: true },
@@ -29,10 +30,30 @@ const SpotDiffGame = {
         { group: ['🍰', '🧁'], similar: true },
     ],
 
+    // Extra tricky pairs for expert level - extremely similar
+    expertEmojiGroups: [
+        { group: ['😀', '😃'], similar: true },
+        { group: ['😮', '😯'], similar: true },
+        { group: ['🙂', '🙃'], similar: true },
+        { group: ['👆', '☝️'], similar: true },
+        { group: ['🤲', '👐'], similar: true },
+        { group: ['🟢', '🟩'], similar: true },
+        { group: ['🔴', '🟥'], similar: true },
+        { group: ['🔵', '🟦'], similar: true },
+        { group: ['⬜', '◻️'], similar: true },
+        { group: ['🏔️', '⛰️'], similar: true },
+        { group: ['🌕', '🌝'], similar: true },
+        { group: ['🌑', '🌚'], similar: true },
+        { group: ['👩', '👱‍♀️'], similar: true },
+        { group: ['🖐️', '✋'], similar: true },
+        { group: ['🔶', '🔸'], similar: true },
+    ],
+
     config: {
         easy:   { gridSize: 6,  rounds: 6  },
         medium: { gridSize: 9,  rounds: 8  },
-        hard:   { gridSize: 12, rounds: 10 }
+        hard:   { gridSize: 16, rounds: 10 },
+        expert: { gridSize: 20, rounds: 12 }
     },
 
     state: null,
@@ -82,8 +103,15 @@ const SpotDiffGame = {
             return;
         }
 
-        const { gridSize } = this.state;
-        const pair = this.emojiGroups[Math.floor(Math.random() * this.emojiGroups.length)];
+        const { gridSize, difficulty } = this.state;
+
+        let groups;
+        if (difficulty === 'expert') {
+            groups = [...this.emojiGroups, ...this.expertEmojiGroups];
+        } else {
+            groups = this.emojiGroups;
+        }
+        const pair = groups[Math.floor(Math.random() * groups.length)];
         const mainEmoji = pair.group[0];
         const diffEmoji = pair.group[1];
 
@@ -91,8 +119,14 @@ const SpotDiffGame = {
 
         const container = document.getElementById('spot-diff-container');
         if (!container) return;
-        const colClass = gridSize <= 6 ? '' : gridSize <= 9 ? '' : 'size-4';
-        const cols = gridSize <= 6 ? 3 : gridSize <= 9 ? 3 : 4;
+
+        let cols;
+        if (gridSize <= 6) cols = 3;
+        else if (gridSize <= 9) cols = 3;
+        else if (gridSize <= 16) cols = 4;
+        else cols = 5;
+
+        const colClass = cols === 4 ? 'size-4' : cols === 5 ? 'size-5' : '';
 
         let html = `
             <div class="spot-diff-question fade-in">מצאו את הפריט השונה!</div>
@@ -153,9 +187,11 @@ const SpotDiffGame = {
         else if (percentage >= 50) message = 'לא רע! שימו לב לפרטים הקטנים';
         else message = 'נסו שוב - התרגול ישפר את התצפית!';
 
+        const levelMap = { easy: 1, medium: 2, hard: 3, expert: 4 };
+
         app.endGame({
             score,
-            level: this.state.difficulty === 'easy' ? 1 : this.state.difficulty === 'medium' ? 2 : 3,
+            level: levelMap[this.state.difficulty] || 1,
             message: `${correct} מתוך ${totalRounds} נכונים (${percentage}%). ${message}`
         });
     },
